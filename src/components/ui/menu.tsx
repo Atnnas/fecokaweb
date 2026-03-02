@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { ArrowLeft, Moon, Sun } from 'lucide-react';
 
 // 2. Define Prop Types
 export interface NavItem {
@@ -79,101 +80,177 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                 variants={sidebarVariants}
                 aria-label="User Profile Menu"
             >
-                {/* User Info Header - BRANDED DARK SECTION */}
-                <div className="bg-midnight-blue p-8 pt-12 text-white relative overflow-hidden flex-shrink-0">
-                    {/* Subtle background pattern/logo */}
-                    <div className="absolute -bottom-4 -right-4 w-24 h-24 opacity-10 pointer-events-none">
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
+                {/* 
+                  * STATE MANAGEMENT FOR SUB-PANELS 
+                  */}
+                {(() => {
+                    const [showConfig, setShowConfig] = React.useState(false);
+                    const [isDark, setIsDark] = React.useState(false);
 
-                    <motion.div variants={itemVariants} className="flex items-center space-x-3 relative z-10">
-                        {user.avatarUrl ? (
-                            <img
-                                src={user.avatarUrl}
-                                alt={`${user.name}'s avatar`}
-                                className="h-11 w-11 rounded-full object-cover border-2 border-crimson-red shadow-md"
-                            />
-                        ) : (
-                            <div className="h-11 w-11 rounded-full bg-crimson-red flex items-center justify-center text-white font-bold text-lg font-outfit shadow-md">
-                                {user.name.charAt(0)}
-                            </div>
-                        )}
-                        <div className="flex flex-col truncate text-left justify-center mt-1">
-                            <span className="font-bold text-lg font-outfit tracking-tight leading-none">{user.name}</span>
-                            {user.role && (
-                                <span className={cn(
-                                    "text-[9px] font-black uppercase tracking-[0.2em] w-fit mt-1.5 px-2 py-0.5 rounded-full shadow-sm",
-                                    user.role === 'admin' ? "bg-crimson-red text-white" : "bg-white/20 text-white/90"
-                                )}>
-                                    {user.role === 'admin' ? 'Administrador' : user.role === 'edit' ? 'Editor' : 'Usuario'}
-                                </span>
-                            )}
-                        </div>
-                    </motion.div>
-                </div>
+                    React.useEffect(() => {
+                        setIsDark(document.documentElement.classList.contains('dark'));
+                    }, []);
 
-                {/* Navigation Links - Scrollable Container */}
-                <nav className="flex-1 overflow-y-auto custom-scrollbar pt-8 pb-6 px-0 flex flex-col gap-3" role="navigation">
-                    {navItems.map((item, index) => {
-                        const isActive = activeHref === item.href;
-                        return (
-                            <React.Fragment key={index}>
-                                {item.isSeparator && <motion.div variants={itemVariants} className="h-px bg-silver-accent/30 my-2 mx-8" />}
-                                <motion.div variants={itemVariants}>
-                                    <Link
-                                        href={item.href}
-                                        onClick={onMenuItemClick}
-                                        className={cn(
-                                            "mx-5 group flex items-center px-6 py-4 rounded-2xl transition-all duration-300 active:scale-95",
-                                            isActive
-                                                ? "bg-white text-crimson-red shadow-md border border-silver-accent/30"
-                                                : "bg-white/40 text-midnight-blue border border-white/50 shadow-sm hover:bg-white/80 hover:text-crimson-red hover:shadow-md"
-                                        )}
-                                    >
-                                        <div className={cn(
-                                            "mr-5 h-6 w-6 transition-colors duration-300 flex items-center justify-center",
-                                            isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
-                                        )}>
-                                            {item.icon}
+                    const toggleDark = () => {
+                        if (isDark) {
+                            document.documentElement.classList.remove('dark');
+                            localStorage.setItem('theme', 'light');
+                            setIsDark(false);
+                        } else {
+                            document.documentElement.classList.add('dark');
+                            localStorage.setItem('theme', 'dark');
+                            setIsDark(true);
+                        }
+                    };
+
+                    const handleItemClick = (e: React.MouseEvent, item: NavItem) => {
+                        if (item.label === 'Configuración') {
+                            e.preventDefault();
+                            setShowConfig(true);
+                        } else if (onMenuItemClick) {
+                            onMenuItemClick();
+                        }
+                    };
+
+                    return (
+                        <>
+                            {/* User Info Header - BRANDED DARK SECTION */}
+                            <div className="bg-midnight-blue p-8 pt-12 text-white relative overflow-hidden flex-shrink-0">
+                                {/* Subtle background pattern/logo */}
+                                <div className="absolute -bottom-4 -right-4 w-24 h-24 opacity-10 pointer-events-none">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                    </svg>
+                                </div>
+
+                                <motion.div variants={itemVariants} className="flex items-center space-x-3 relative z-10">
+                                    {user.avatarUrl ? (
+                                        <img
+                                            src={user.avatarUrl}
+                                            alt={`${user.name}'s avatar`}
+                                            className="h-11 w-11 rounded-full object-cover border-2 border-crimson-red shadow-md"
+                                        />
+                                    ) : (
+                                        <div className="h-11 w-11 rounded-full bg-crimson-red flex items-center justify-center text-white font-bold text-lg font-outfit shadow-md">
+                                            {user.name.charAt(0)}
                                         </div>
-                                        <span className={cn(
-                                            "font-semibold uppercase tracking-[0.15em] text-[13.5px] transition-colors duration-300",
-                                            isActive ? "text-midnight-blue font-black" : "text-midnight-blue/90 group-hover:text-crimson-red"
-                                        )}>
-                                            {item.label}
-                                        </span>
-                                        <ChevronRight className={cn(
-                                            "ml-auto h-5 w-5 transition-all duration-300",
-                                            isActive
-                                                ? "text-crimson-red opacity-100 translate-x-0"
-                                                : "text-steel-gray/50 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0"
-                                        )} />
-                                    </Link>
+                                    )}
+                                    <div className="flex flex-col truncate text-left justify-center mt-1">
+                                        <span className="font-bold text-lg font-outfit tracking-tight leading-none">{user.name}</span>
+                                        {user.role && (
+                                            <span className={cn(
+                                                "text-[9px] font-black uppercase tracking-[0.2em] w-fit mt-1.5 px-2 py-0.5 rounded-full shadow-sm",
+                                                user.role === 'admin' ? "bg-crimson-red text-white" : "bg-white/20 text-white/90"
+                                            )}>
+                                                {user.role === 'admin' ? 'Administrador' : user.role === 'edit' ? 'Editor' : 'Usuario'}
+                                            </span>
+                                        )}
+                                    </div>
                                 </motion.div>
-                            </React.Fragment>
-                        );
-                    })}
-                </nav>
+                            </div>
 
-                {/* Logout Button */}
-                <motion.div variants={itemVariants} className="mt-auto p-4 border-t border-silver-accent/50 bg-white/50 flex-shrink-0">
-                    <button
-                        onClick={logoutItem.onClick}
-                        className="group flex w-full items-center rounded-xl px-4 py-4 text-[12px] font-black uppercase tracking-[0.2em] text-crimson-red transition-all duration-300 hover:bg-crimson-red hover:text-white shadow-sm active:scale-95 border border-crimson-red/10"
-                    >
-                        <span className="mr-4 h-5 w-5 transition-transform duration-300 group-hover:rotate-12">{logoutItem.icon}</span>
-                        <span>{logoutItem.label}</span>
-                    </button>
-                </motion.div>
+                            <div className="flex-1 relative overflow-hidden">
+                                {/* Nested Config Panel */}
+                                <motion.div
+                                    initial={false}
+                                    animate={{ x: showConfig ? 0 : '100%' }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                                    className="absolute inset-0 bg-mist-white z-20 flex flex-col"
+                                >
+                                    <div className="p-4 border-b border-silver-accent flex items-center">
+                                        <button
+                                            onClick={() => setShowConfig(false)}
+                                            className="p-2 mr-2 rounded-full hover:bg-silver-accent/50 transition-colors active:scale-90"
+                                        >
+                                            <ArrowLeft className="w-5 h-5 text-midnight-blue" />
+                                        </button>
+                                        <h2 className="font-outfit font-bold text-lg text-midnight-blue">Configuración</h2>
+                                    </div>
+                                    <div className="p-6 flex-1">
+                                        <div className="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm border border-silver-accent/30">
+                                            <div className="flex items-center gap-4">
+                                                <div className={`p-2 rounded-full ${isDark ? 'bg-indigo-900 text-indigo-200' : 'bg-orange-100 text-orange-500'}`}>
+                                                    {isDark ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                                                </div>
+                                                <span className="font-semibold text-midnight-blue">Modo Oscuro</span>
+                                            </div>
+                                            <button
+                                                onClick={toggleDark}
+                                                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-crimson-red focus:ring-offset-2 ${isDark ? 'bg-indigo-600' : 'bg-silver-accent'}`}
+                                            >
+                                                <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition duration-300 ${isDark ? 'translate-x-6' : 'translate-x-1'}`} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </motion.div>
 
-                {/* Branding Watermark */}
-                <div className="px-8 pb-4 pt-2 text-center flex-shrink-0">
-                    <p className="text-[8px] font-black uppercase tracking-[0.4em] text-silver-accent">
-                        FECOKA Costa Rica
-                    </p>
-                </div>
+                                {/* Main Navigation Links */}
+                                <nav className="absolute inset-0 overflow-y-auto custom-scrollbar pt-8 pb-6 px-0 flex flex-col gap-3" role="navigation">
+                                    {navItems.map((item, index) => {
+                                        const isActive = activeHref === item.href && !showConfig;
+                                        return (
+                                            <React.Fragment key={index}>
+                                                {item.isSeparator && <motion.div variants={itemVariants} className="h-px bg-silver-accent/30 my-2 mx-8" />}
+                                                <motion.div variants={itemVariants}>
+                                                    <Link
+                                                        href={item.href}
+                                                        onClick={(e) => handleItemClick(e, item)}
+                                                        style={{ perspective: '800px' }}
+                                                        className="mx-5 block group"
+                                                    >
+                                                        <div className={cn(
+                                                            "flex items-center px-6 py-4 rounded-2xl transition-all duration-300 transform-gpu active:scale-[0.92] active:rotate-x-12 active:-translate-y-1 shadow-sm",
+                                                            isActive
+                                                                ? "bg-white text-crimson-red shadow-md border border-silver-accent/30"
+                                                                : "bg-white/40 text-midnight-blue border border-white/50 shadow-sm hover:bg-white/80 hover:text-crimson-red hover:shadow-md"
+                                                        )}>
+                                                            <div className={cn(
+                                                                "mr-5 h-6 w-6 transition-colors duration-300 flex items-center justify-center",
+                                                                isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
+                                                            )}>
+                                                                {item.icon}
+                                                            </div>
+                                                            <span className={cn(
+                                                                "font-semibold uppercase tracking-[0.15em] text-[13.5px] transition-colors duration-300",
+                                                                isActive ? "text-midnight-blue font-black" : "text-midnight-blue/90 group-hover:text-crimson-red"
+                                                            )}>
+                                                                {item.label}
+                                                            </span>
+                                                            <ChevronRight className={cn(
+                                                                "ml-auto h-5 w-5 transition-all duration-300",
+                                                                isActive
+                                                                    ? "text-crimson-red opacity-100 translate-x-0"
+                                                                    : "text-steel-gray/50 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0"
+                                                            )} />
+                                                        </div>
+                                                    </Link>
+                                                </motion.div>
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                </nav>
+                            </div>
+
+                            {/* Logout Button */}
+                            <motion.div variants={itemVariants} className="mt-auto p-4 border-t border-silver-accent/50 bg-white/50 flex-shrink-0">
+                                <button
+                                    onClick={logoutItem.onClick}
+                                    className="group flex w-full items-center rounded-xl px-4 py-4 text-[12px] font-black uppercase tracking-[0.2em] text-crimson-red transition-all duration-300 hover:bg-crimson-red hover:text-white shadow-sm active:scale-95 border border-crimson-red/10"
+                                >
+                                    <span className="mr-4 h-5 w-5 transition-transform duration-300 group-hover:rotate-12">{logoutItem.icon}</span>
+                                    <span>{logoutItem.label}</span>
+                                </button>
+                            </motion.div>
+
+                            {/* Branding Watermark */}
+                            <div className="px-8 pb-4 pt-2 text-center flex-shrink-0">
+                                <p className="text-[8px] font-black uppercase tracking-[0.4em] text-silver-accent">
+                                    FECOKA Costa Rica
+                                </p>
+                            </div>
+                        </>
+                    );
+                })()}
             </motion.aside>
         );
     }

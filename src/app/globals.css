@@ -27,6 +27,24 @@
   --header-height: 80px;
 }
 
+.dark {
+  --color-mist-white: #020617;
+  /* Darkest Slate */
+  --color-deep-black: #F8FAFC;
+  /* Light Slate for text */
+  --color-midnight-blue: #0F172A;
+  /* Dark Slate Header/Cards */
+  --color-steel-gray: #94A3B8;
+  /* Muted text */
+  --color-silver-accent: #1E293B;
+  /* Dark borders */
+
+  --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.6);
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  /* Dark Glass */
+  --glass-border: rgba(255, 255, 255, 0.05);
+}
+
 @import "tailwindcss";
 
 * {

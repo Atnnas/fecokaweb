@@ -39,6 +39,15 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
         document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
     }, [isMenuOpen]);
 
+    // Restore Dark Mode Preference
+    useEffect(() => {
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, []);
+
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
