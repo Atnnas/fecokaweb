@@ -6,6 +6,25 @@ import Academy from '@/models/Academy'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://fecoka.org'
 
+    const staticRoutes = [
+        '',
+        '/news',
+        '/events',
+        '/rankings',
+        '/academies',
+        '/about',
+    ].map((route) => ({
+        url: `${baseUrl}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: route === '' ? 1 : 0.8,
+    }))
+
+    // Vercel build phase doesn't have MONGODB_URI, return static only
+    if (!process.env.MONGODB_URI) {
+        return staticRoutes;
+    }
+
     await dbConnect()
 
     // Fetch dynamic routes
@@ -26,20 +45,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,
         priority: 0.6,
-    }))
-
-    const staticRoutes = [
-        '',
-        '/news',
-        '/events',
-        '/rankings',
-        '/academies',
-        '/about',
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily' as const,
-        priority: route === '' ? 1 : 0.8,
     }))
 
     return [...staticRoutes, ...newsRoutes, ...academyRoutes]
