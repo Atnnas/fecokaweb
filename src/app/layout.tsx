@@ -1,6 +1,6 @@
+import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Inter, Outfit } from "next/font/google";
-import "./globals.css";
 import { Providers } from "@/components/Providers";
 import LayoutClient from "@/components/LayoutClient";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
