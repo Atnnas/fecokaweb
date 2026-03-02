@@ -139,7 +139,7 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                                                 : "bg-white/40 text-midnight-blue border border-white/50 shadow-sm hover:bg-white/80 hover:text-crimson-red hover:shadow-md"
                                         )}>
                                             <div className={cn(
-                                                "mr-5 h-6 w-6 transition-colors duration-300 flex items-center justify-center",
+                                                "mr-8 h-6 w-6 transition-colors duration-300 flex items-center justify-center",
                                                 isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
                                             )}>
                                                 {item.icon}
