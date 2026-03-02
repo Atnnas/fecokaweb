@@ -40,22 +40,24 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-xl shadow-premium border-b border-gray-100 py-2' : 'bg-transparent py-4 md:py-6'
                     }`}
             >
-                <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center h-12 md:h-16">
+                <div className="max-w-[1440px] mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-12 h-16 md:h-20">
 
-                    {/* Logo Area */}
-                    <Link href="/" className="relative z-50 hover:opacity-90 transition-opacity">
-                        <div className="relative h-8 w-28 md:h-12 md:w-40 transition-transform hover:scale-105">
-                            <Image
-                                src="/assets/fecoka-logo.jpg"
-                                alt="FECOKA Logo"
-                                fill
-                                className="object-contain"
-                                priority
-                            />
-                        </div>
-                    </Link>
+                    {/* LEFT: Logo - Refined sizing for Galaxy S25 scale */}
+                    <div className="flex items-center">
+                        <Link href="/" className="relative z-50">
+                            <div className="relative h-9 w-24 md:h-12 md:w-40 transition-transform hover:scale-105">
+                                <Image
+                                    src="/assets/fecoka-logo.jpg"
+                                    alt="FECOKA Logo"
+                                    fill
+                                    className="object-contain"
+                                    priority
+                                />
+                            </div>
+                        </Link>
+                    </div>
 
-                    {/* Desktop Navigation */}
+                    {/* CENTER: Desktop Navigation (Untouched for lg+) */}
                     <nav className="hidden lg:flex items-center gap-x-2 xl:gap-x-4">
                         {NAV_ITEMS.map((item) => {
                             const isActive = pathname === item.href;
@@ -77,32 +79,31 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         })}
                     </nav>
 
-                    {/* Actions Area */}
+                    {/* RIGHT: Actions & Hamburger - Perfect balance for mobile */}
                     <div className="flex items-center gap-3 relative z-50">
-                        {/* Hide "Acceso" text on mobile to keep it tidy */}
                         <button
                             onClick={onLoginClick}
-                            className="hidden md:flex text-[13px] font-black uppercase tracking-widest text-midnight-blue hover:text-crimson-red transition-colors px-4"
+                            className="hidden md:block text-[13px] font-black uppercase tracking-widest text-midnight-blue hover:text-crimson-red transition-colors px-4"
                         >
                             Acceso
                         </button>
 
                         <button
                             onClick={onLoginClick}
-                            className="bg-midnight-blue text-white text-[10px] md:text-xs font-black tracking-tighter md:tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-md active:scale-95"
+                            className="bg-midnight-blue text-white text-[10px] md:text-xs font-black tracking-widest uppercase px-4 md:px-6 py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-md active:scale-95"
                         >
                             Log In
                         </button>
 
-                        {/* Mobile Hamburger Button - EXACT STYLE REQUESTED */}
+                        {/* Custom Bold Hamburger Icon (Exact User Style) */}
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className="flex lg:hidden flex-col items-center justify-center gap-[4.5px] w-10 h-10 ml-2 focus:outline-none group relative z-50"
+                            className="flex lg:hidden flex-col items-center justify-center gap-[4.5px] w-10 h-10 ml-1.5 focus:outline-none group"
                             aria-label="Menú Principal"
                         >
-                            <span className="block h-[3.5px] w-6 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
-                            <span className="block h-[3.5px] w-6 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
-                            <span className="block h-[3.5px] w-6 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
+                            <span className="block h-[4px] w-6.5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red shadow-sm" />
+                            <span className="block h-[4px] w-6.5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red shadow-sm" />
+                            <span className="block h-[4px] w-6.5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red shadow-sm" />
                         </button>
                     </div>
                 </div>
