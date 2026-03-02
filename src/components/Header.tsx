@@ -45,15 +45,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
             >
                 <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center gap-8">
 
-                    {/* Mobile Hamburger (Left - Top) */}
-                    <button
-                        onClick={() => setIsMenuOpen(true)}
-                        className="flex lg:hidden flex-col gap-1.5 p-2 focus:outline-none group relative z-50"
-                        aria-label="Abrir Menú"
-                    >
-                        <span className={`block h-[2px] w-6 transition-all duration-300 ${scrolled ? 'bg-midnight-blue' : 'bg-midnight-blue md:bg-white'}`} />
-                        <span className={`block h-[2px] w-4 transition-all duration-300 ${scrolled ? 'bg-midnight-blue' : 'bg-midnight-blue md:bg-white'}`} />
-                    </button>
+
 
                     {/* Logo */}
                     <Link href="/" className="relative z-50 shrink-0">
@@ -106,6 +98,16 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                             className="bg-midnight-blue text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-xl hover:-translate-y-0.5"
                         >
                             Sign In
+                        </button>
+
+                        {/* Mobile Hamburger (Right - Top) */}
+                        <button
+                            onClick={() => setIsMenuOpen(true)}
+                            className="flex lg:hidden flex-col gap-1.5 p-2 focus:outline-none group relative z-50 ml-1"
+                            aria-label="Abrir Menú"
+                        >
+                            <span className={`block h-[3px] w-6 rounded-full transition-all duration-300 ${scrolled ? 'bg-midnight-blue' : 'bg-midnight-blue'}`} />
+                            <span className={`block h-[3px] w-4 rounded-full transition-all duration-300 ${scrolled ? 'bg-midnight-blue' : 'bg-midnight-blue'}`} />
                         </button>
                     </div>
                 </div>
