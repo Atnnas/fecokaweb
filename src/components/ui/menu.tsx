@@ -130,7 +130,7 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                                         href={item.href}
                                         onClick={onMenuItemClick}
                                         style={{ perspective: '800px' }}
-                                        className="mx-5 block group"
+                                        className="ml-10 mr-6 block group"
                                     >
                                         <div className={cn(
                                             "flex items-center px-6 py-4 rounded-2xl transition-all duration-300 transform-gpu active:scale-[0.92] active:rotate-x-12 active:-translate-y-1 shadow-sm",
