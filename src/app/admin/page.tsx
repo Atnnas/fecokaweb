@@ -62,17 +62,17 @@ export default function AdminDashboard() {
         <div className="w-full h-full flex flex-col gap-12 animate-fade-in font-sans">
 
             {/* Header Section - Sharp, Dark, Professional */}
-            <header className="w-full bg-midnight-blue text-white p-8 lg:p-16 border-l-4 lg:border-l-8 border-crimson-red flex flex-col md:flex-row justify-between items-start md:items-end gap-6 shadow-2xl relative overflow-hidden">
+            <header className="w-full bg-midnight-blue text-white p-[24px] lg:p-16 border-l-[6px] lg:border-l-8 border-crimson-red flex flex-col md:flex-row justify-between items-start md:items-end gap-6 shadow-2xl relative overflow-hidden shrink-0">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-black/20 to-transparent pointer-events-none"></div>
 
-                <div className="z-10 relative">
-                    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black mb-2 tracking-tighter uppercase leading-none mt-4">
+                <div className="z-10 relative max-w-full">
+                    <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-2 tracking-tighter uppercase leading-none mt-4 break-words whitespace-normal">
                         CENTRO DE <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">OPERACIONES</span>
                     </h1>
                 </div>
 
                 <div className="z-10 relative">
-                    <div className="bg-black/40 border border-white/10 px-4 py-3 md:px-6 md:py-4 backdrop-blur-sm flex items-center gap-4">
+                    <div className="bg-black/40 border border-white/10 px-[20px] py-[12px] md:px-6 md:py-4 backdrop-blur-sm flex items-center gap-4">
                         <div className="w-3 h-3 bg-green-500 animate-pulse"></div>
                         <span className="text-xs md:text-sm font-bold tracking-widest text-gray-300">SISTEMA EN LÍNEA</span>
                     </div>
@@ -80,18 +80,18 @@ export default function AdminDashboard() {
             </header>
 
             {/* Global Stats - Sharp Grid */}
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-white border-y border-gray-200">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-white border-y border-gray-200 shrink-0">
                 {stats.map((stat, idx) => (
-                    <div key={stat.name} className={`group px-10 py-8 md:p-10 lg:p-12 flex flex-col justify-between hover:bg-gray-50 transition-colors duration-300 ${idx !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}>
-                        <div className="flex justify-between items-start mb-8 gap-4">
-                            <div className={`w-12 h-12 md:w-14 md:h-14 border-2 ${stat.accent} flex shrink-0 items-center justify-center bg-transparent group-hover:scale-110 transition-transform duration-500`}>
-                                <svg className={`w-5 h-5 md:w-6 md:h-6 ${stat.accent.split(' ')[1]}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div key={stat.name} className={`group px-[32px] py-[24px] md:p-10 lg:p-12 flex flex-col justify-between hover:bg-gray-50 transition-colors duration-300 ${idx !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}>
+                        <div className="flex justify-between items-start mb-6 gap-4">
+                            <div className={`w-[48px] h-[48px] md:w-14 md:h-14 border-2 ${stat.accent} flex shrink-0 items-center justify-center bg-transparent group-hover:scale-110 transition-transform duration-500`}>
+                                <svg className={`w-[24px] h-[24px] md:w-6 md:h-6 ${stat.accent.split(' ')[1]}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon} />
                                 </svg>
                             </div>
-                            <span className="text-5xl sm:text-6xl lg:text-7xl font-black text-deep-black tracking-tighter text-right pr-2">{stat.value}</span>
+                            <span className="text-4xl sm:text-6xl lg:text-7xl font-black text-deep-black tracking-tighter text-right pr-[8px] break-all max-w-[50%] overflow-hidden">{stat.value}</span>
                         </div>
-                        <p className="text-steel-gray text-[11px] md:text-xs font-black tracking-[0.2em] uppercase leading-relaxed">{stat.name}</p>
+                        <p className="text-steel-gray text-[11px] md:text-xs font-black tracking-[0.2em] uppercase leading-relaxed break-words">{stat.name}</p>
                     </div>
                 ))}
             </div>
