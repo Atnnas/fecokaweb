@@ -115,7 +115,11 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                 </div>
 
                 {/* Navigation Links - Scrollable Container */}
-                <nav className="flex-1 overflow-y-auto custom-scrollbar pt-8 pb-6 px-0 flex flex-col gap-3" role="navigation">
+                <motion.nav
+                    variants={sidebarVariants}
+                    className="flex-1 overflow-y-auto custom-scrollbar pt-8 pb-6 px-0 flex flex-col gap-3"
+                    role="navigation"
+                >
                     {navItems.map((item, index) => {
                         const isActive = activeHref === item.href;
                         return (
@@ -158,7 +162,7 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                             </React.Fragment>
                         );
                     })}
-                </nav>
+                </motion.nav>
 
                 {/* Logout Button */}
                 <motion.div variants={itemVariants} className="mt-auto p-4 border-t border-silver-accent/50 bg-white/50 flex-shrink-0">
