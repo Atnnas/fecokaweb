@@ -4,6 +4,7 @@ import dbConnect from "@/lib/db"
 import User from "@/models/User"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    trustHost: true,
     ...authConfig,
     secret: process.env.AUTH_SECRET,
     callbacks: {
