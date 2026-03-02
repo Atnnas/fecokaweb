@@ -42,6 +42,7 @@
     "activate-admin.js",
     "test-db.ts",
     "test-db.js",
-    "seed.js"
+    "seed.js",
+    "fecoka-web-init"
   ]
 }
