@@ -29,6 +29,7 @@ interface UserProfileSidebarProps {
         label: string;
         onClick: () => void;
     };
+    onMenuItemClick?: () => void;
     className?: string;
 }
 
@@ -65,7 +66,7 @@ const itemVariants = {
 
 // 4. Create the Component
 export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSidebarProps>(
-    ({ user, navItems, activeHref, logoutItem, className }, ref) => {
+    ({ user, navItems, activeHref, logoutItem, onMenuItemClick, className }, ref) => {
         return (
             <motion.aside
                 ref={ref}
@@ -123,6 +124,7 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                                 <motion.div variants={itemVariants}>
                                     <Link
                                         href={item.href}
+                                        onClick={onMenuItemClick}
                                         className={cn(
                                             "group flex items-center px-8 py-5 transition-all duration-300 active:bg-white/50 border-b border-silver-accent/10 last:border-b-0",
                                             isActive

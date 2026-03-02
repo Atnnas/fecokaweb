@@ -255,6 +255,7 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
                         navItems={navItems}
                         activeHref={pathname}
                         logoutItem={logoutItem}
+                        onMenuItemClick={() => setIsMenuOpen(false)}
                         className="h-full rounded-none border-0 shadow-none"
                     />
 
