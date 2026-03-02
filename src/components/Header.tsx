@@ -60,7 +60,9 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
         }))
     ];
 
-    if (session?.user?.role === 'admin') {
+    const isSuperAdmin = session?.user?.email?.toLowerCase() === 'david.artavia.rodriguez@gmail.com';
+
+    if (session?.user?.role === 'admin' || isSuperAdmin) {
         navItems.push({
             label: 'Administración',
             href: '/admin',
