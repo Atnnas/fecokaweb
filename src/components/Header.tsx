@@ -103,11 +103,12 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         {/* Mobile Hamburger (Right - Top) */}
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className="flex lg:hidden flex-col gap-1.5 p-2 focus:outline-none group relative z-50 ml-1"
+                            className="flex lg:hidden flex-col items-center justify-center gap-[5px] w-10 h-10 ml-2 rounded-full border border-gray-200/50 bg-white/50 backdrop-blur-md shadow-sm hover:bg-gray-100 transition-all focus:outline-none group relative z-50"
                             aria-label="Abrir Menú"
                         >
-                            <span className={`block h-[3px] w-6 rounded-full transition-all duration-300 ${scrolled ? 'bg-midnight-blue' : 'bg-midnight-blue'}`} />
-                            <span className={`block h-[3px] w-4 rounded-full transition-all duration-300 ${scrolled ? 'bg-midnight-blue' : 'bg-midnight-blue'}`} />
+                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
+                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
+                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
                         </button>
                     </div>
                 </div>
