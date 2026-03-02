@@ -94,13 +94,15 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                             Log In
                         </button>
 
-                        {/* Mobile Hamburger Button - ENHANCED UI */}
+                        {/* Mobile Hamburger Button - EXACT STYLE REQUESTED */}
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className="flex lg:hidden items-center justify-center w-10 h-10 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors focus:outline-none"
+                            className="flex lg:hidden flex-col items-center justify-center gap-[4.5px] w-10 h-10 ml-2 focus:outline-none group relative z-50"
                             aria-label="Menú Principal"
                         >
-                            <Menu className="w-5 h-5 text-midnight-blue" strokeWidth={2.5} />
+                            <span className="block h-[3.5px] w-6 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
+                            <span className="block h-[3.5px] w-6 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
+                            <span className="block h-[3.5px] w-6 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
                         </button>
                     </div>
                 </div>
