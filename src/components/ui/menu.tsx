@@ -115,40 +115,40 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                 </div>
 
                 {/* Navigation Links - Scrollable Container */}
-                <nav className="flex-1 overflow-y-auto custom-scrollbar pt-4 pb-4 px-0 flex flex-col" role="navigation">
+                <nav className="flex-1 overflow-y-auto custom-scrollbar pt-8 pb-6 px-0 flex flex-col gap-3" role="navigation">
                     {navItems.map((item, index) => {
                         const isActive = activeHref === item.href;
                         return (
                             <React.Fragment key={index}>
-                                {item.isSeparator && <motion.div variants={itemVariants} className="h-px bg-silver-accent/30 my-4 mx-8" />}
+                                {item.isSeparator && <motion.div variants={itemVariants} className="h-px bg-silver-accent/30 my-2 mx-8" />}
                                 <motion.div variants={itemVariants}>
                                     <Link
                                         href={item.href}
                                         onClick={onMenuItemClick}
                                         className={cn(
-                                            "group flex items-center px-8 py-5 transition-all duration-300 active:bg-white/50 border-b border-silver-accent/10 last:border-b-0",
+                                            "mx-5 group flex items-center px-6 py-4 rounded-2xl transition-all duration-300 active:scale-95",
                                             isActive
-                                                ? "bg-white text-crimson-red shadow-sm border-l-4 border-l-crimson-red"
-                                                : "text-midnight-blue hover:bg-white/40 border-l-4 border-l-transparent hover:text-crimson-red"
+                                                ? "bg-white text-crimson-red shadow-md border border-silver-accent/30"
+                                                : "bg-white/40 text-midnight-blue border border-white/50 shadow-sm hover:bg-white/80 hover:text-crimson-red hover:shadow-md"
                                         )}
                                     >
                                         <div className={cn(
-                                            "mr-5 h-5 w-5 transition-colors duration-300",
+                                            "mr-5 h-6 w-6 transition-colors duration-300 flex items-center justify-center",
                                             isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
                                         )}>
                                             {item.icon}
                                         </div>
                                         <span className={cn(
-                                            "font-semibold uppercase tracking-[0.2em] text-[13px] transition-colors duration-300",
-                                            isActive ? "text-midnight-blue font-bold" : "text-midnight-blue/80 group-hover:text-crimson-red"
+                                            "font-semibold uppercase tracking-[0.15em] text-[13.5px] transition-colors duration-300",
+                                            isActive ? "text-midnight-blue font-black" : "text-midnight-blue/90 group-hover:text-crimson-red"
                                         )}>
                                             {item.label}
                                         </span>
                                         <ChevronRight className={cn(
-                                            "ml-auto h-4 w-4 transition-all duration-300",
+                                            "ml-auto h-5 w-5 transition-all duration-300",
                                             isActive
                                                 ? "text-crimson-red opacity-100 translate-x-0"
-                                                : "text-silver-accent opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                                                : "text-steel-gray/50 opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0"
                                         )} />
                                     </Link>
                                 </motion.div>
