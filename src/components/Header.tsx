@@ -47,6 +47,7 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
         name: session?.user?.name || 'Invitado',
         email: session?.user?.email || 'Inicia sesión para más funciones',
         avatarUrl: session?.user?.image || '',
+        role: session?.user?.role as string | undefined,
     };
 
     const navItems: NavItem[] = [

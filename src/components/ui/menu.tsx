@@ -17,6 +17,7 @@ export interface UserProfile {
     name: string;
     email: string;
     avatarUrl: string;
+    role?: string;
 }
 
 interface UserProfileSidebarProps {
@@ -79,59 +80,66 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                         </svg>
                     </div>
 
-                    <motion.div variants={itemVariants} className="flex items-center space-x-4 relative z-10">
+                    <motion.div variants={itemVariants} className="flex items-center space-x-3 relative z-10">
                         {user.avatarUrl ? (
                             <img
                                 src={user.avatarUrl}
                                 alt={`${user.name}'s avatar`}
-                                className="h-16 w-16 rounded-full object-cover border-2 border-crimson-red shadow-lg"
+                                className="h-11 w-11 rounded-full object-cover border-2 border-crimson-red shadow-md"
                             />
                         ) : (
-                            <div className="h-16 w-16 rounded-full bg-crimson-red flex items-center justify-center text-white font-black text-2xl font-outfit shadow-lg">
+                            <div className="h-11 w-11 rounded-full bg-crimson-red flex items-center justify-center text-white font-bold text-lg font-outfit shadow-md">
                                 {user.name.charAt(0)}
                             </div>
                         )}
-                        <div className="flex flex-col truncate text-left">
-                            <span className="font-black text-xl font-outfit tracking-tight leading-tight">{user.name}</span>
-                            <span className="text-[10px] text-white/60 font-bold uppercase tracking-widest truncate mt-1">{user.email}</span>
+                        <div className="flex flex-col truncate text-left justify-center mt-1">
+                            <span className="font-bold text-lg font-outfit tracking-tight leading-none">{user.name}</span>
+                            {user.role && (
+                                <span className={cn(
+                                    "text-[9px] font-black uppercase tracking-[0.2em] w-fit mt-1.5 px-2 py-0.5 rounded-full shadow-sm",
+                                    user.role === 'admin' ? "bg-crimson-red text-white" : "bg-white/20 text-white/90"
+                                )}>
+                                    {user.role === 'admin' ? 'Administrador' : user.role === 'edit' ? 'Editor' : 'Usuario'}
+                                </span>
+                            )}
                         </div>
                     </motion.div>
                 </div>
 
                 {/* Navigation Links - Scrollable Container */}
-                <nav className="flex-1 overflow-y-auto custom-scrollbar pt-6 pb-4 px-4 space-y-1.5" role="navigation">
+                <nav className="flex-1 overflow-y-auto custom-scrollbar pt-4 pb-4 px-0 flex flex-col" role="navigation">
                     {navItems.map((item, index) => {
                         const isActive = activeHref === item.href;
                         return (
                             <React.Fragment key={index}>
-                                {item.isSeparator && <motion.div variants={itemVariants} className="h-px bg-silver-accent/50 my-4 mx-4" />}
+                                {item.isSeparator && <motion.div variants={itemVariants} className="h-px bg-silver-accent/30 my-4 mx-8" />}
                                 <motion.div variants={itemVariants}>
                                     <Link
                                         href={item.href}
                                         className={cn(
-                                            "group flex items-center rounded-xl px-4 py-3.5 transition-all duration-300 active:scale-95",
+                                            "group flex items-center px-8 py-5 transition-all duration-300 active:bg-white/50 border-b border-silver-accent/10 last:border-b-0",
                                             isActive
-                                                ? "bg-white text-crimson-red shadow-sm border border-silver-accent/50"
-                                                : "text-midnight-blue hover:bg-white/60 hover:text-crimson-red"
+                                                ? "bg-white text-crimson-red shadow-sm border-l-4 border-l-crimson-red"
+                                                : "text-midnight-blue hover:bg-white/40 border-l-4 border-l-transparent hover:text-crimson-red"
                                         )}
                                     >
                                         <div className={cn(
-                                            "mr-4 h-5.5 w-5.5 transition-colors duration-300",
+                                            "mr-5 h-5 w-5 transition-colors duration-300",
                                             isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
                                         )}>
                                             {item.icon}
                                         </div>
                                         <span className={cn(
-                                            "font-extrabold uppercase tracking-wider text-[14px] transition-colors duration-300",
-                                            isActive ? "text-midnight-blue" : "text-midnight-blue group-hover:text-crimson-red"
+                                            "font-semibold uppercase tracking-[0.2em] text-[13px] transition-colors duration-300",
+                                            isActive ? "text-midnight-blue font-bold" : "text-midnight-blue/80 group-hover:text-crimson-red"
                                         )}>
                                             {item.label}
                                         </span>
                                         <ChevronRight className={cn(
                                             "ml-auto h-4 w-4 transition-all duration-300",
                                             isActive
-                                                ? "opacity-100 translate-x-0"
-                                                : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                                                ? "text-crimson-red opacity-100 translate-x-0"
+                                                : "text-silver-accent opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
                                         )} />
                                     </Link>
                                 </motion.div>
