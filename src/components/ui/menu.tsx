@@ -38,20 +38,27 @@ const sidebarVariants = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.08,
+            delayChildren: 0.2, // Small delay so the sidebar background slides in first
+            staggerChildren: 0.1, // More noticeable waterfall stagger effect
         },
     },
 } as const;
 
 const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: {
+        opacity: 0,
+        y: 40,        // Come from below
+        rotate: 5     // Start with a slight angle (like the GSAP example)
+    },
     visible: {
         opacity: 1,
-        x: 0,
+        y: 0,
+        rotate: 0,
         transition: {
             type: 'spring',
-            stiffness: 100,
-            damping: 15,
+            stiffness: 110,
+            damping: 14,
+            mass: 0.8
         },
     },
 } as const;
