@@ -29,7 +29,7 @@ const AdminSidebar = () => {
     return (
         <>
             {/* Mobile Header (Only visible on small screens) */}
-            <div className="md:hidden fixed top-0 left-0 w-full h-16 bg-deep-black z-[90] flex items-center justify-between px-4 border-b border-white/5 shadow-md">
+            <div className="md:hidden flex-none w-full h-16 bg-deep-black z-[90] flex items-center justify-between px-6 border-b border-white/5 shadow-md">
                 <Link href="/admin" className="relative block w-[100px] h-[40px]">
                     <Image
                         src="/assets/fecoka-logo-blanco.jpg"
