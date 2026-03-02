@@ -43,13 +43,11 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-premium border-b border-white border-opacity-20 py-2' : 'bg-transparent py-4 md:py-6'
                     }`}
             >
-                <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center gap-8">
+                <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center gap-4">
 
-
-
-                    {/* Logo */}
+                    {/* Logo (Left) */}
                     <Link href="/" className="relative z-50 shrink-0">
-                        <div className="relative h-10 w-28 md:h-12 md:w-36 transition-transform hover:scale-105">
+                        <div className="relative h-8 w-24 md:h-12 md:w-36 transition-transform hover:scale-105">
                             <Image
                                 src="/assets/fecoka-logo.jpg"
                                 alt="FECOKA Logo"
@@ -60,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         </div>
                     </Link>
 
-                    {/* Desktop Navigation (Center/Right) */}
+                    {/* Desktop Navigation (Center) */}
                     <nav className="hidden lg:flex flex-1 items-center justify-center gap-x-1 xl:gap-x-2">
                         {NAV_ITEMS.map((item) => {
                             const isActive = pathname === item.href;
@@ -84,8 +82,8 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         })}
                     </nav>
 
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-3 shrink-0 relative z-50">
+                    {/* Right Actions & Mobile Hamburger */}
+                    <div className="flex items-center gap-2 md:gap-3 shrink-0 relative z-50">
                         <button
                             onClick={onLoginClick}
                             className={`hidden md:flex text-sm font-bold transition-colors px-4 py-2 ${scrolled ? 'text-midnight-blue hover:text-crimson-red' : 'text-midnight-blue hover:text-crimson-red'
@@ -93,22 +91,23 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         >
                             Acceso
                         </button>
+
                         <button
                             onClick={onLoginClick}
-                            className="bg-midnight-blue text-white text-xs font-bold tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-xl hover:-translate-y-0.5"
+                            className="bg-midnight-blue text-white text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 md:px-5 py-2 md:py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-lg hover:-translate-y-0.5"
                         >
-                            Sign In
+                            Log In
                         </button>
 
-                        {/* Mobile Hamburger (Right - Top) */}
+                        {/* Mobile Hamburger (Far Right) */}
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className="flex lg:hidden flex-col items-center justify-center gap-[5px] w-10 h-10 ml-2 rounded-full border border-gray-200/50 bg-white/50 backdrop-blur-md shadow-sm hover:bg-gray-100 transition-all focus:outline-none group relative z-50"
+                            className="flex lg:hidden flex-col items-center justify-center gap-[4px] w-9 h-9 rounded-full bg-midnight-blue/5 hover:bg-midnight-blue/10 transition-colors focus:outline-none z-50 ml-1"
                             aria-label="Abrir Menú"
                         >
-                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
-                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
-                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue transition-all duration-300 group-hover:bg-crimson-red" />
+                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue" />
+                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue" />
+                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue" />
                         </button>
                     </div>
                 </div>
