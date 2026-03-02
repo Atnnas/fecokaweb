@@ -58,7 +58,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="relative z-10 text-center px-6 max-w-5xl animate-fade-up">
+        <div className="relative z-10 text-center px-8 md:px-6 max-w-5xl animate-fade-up">
           <div className="inline-flex items-center gap-3 px-6 py-2.5 mb-8 rounded-full bg-white border border-silver-accent shadow-premium">
             <span className="w-2 h-2 rounded-full bg-crimson-red animate-pulse" />
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-midnight-blue">
@@ -71,7 +71,7 @@ export default function Home() {
             <span className="text-crimson-red">EXCELENCIA</span>
           </h1>
 
-          <p className="text-lg md:text-2xl text-steel-gray mb-14 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight px-4">
+          <p className="text-lg md:text-2xl text-steel-gray mb-14 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight px-6 md:px-8">
             Forjando el carácter nacional a través de la disciplina, el respeto inquebrantable y la tradición milenaria del Karate-Do.
           </p>
 
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Featured News / Grid Section */}
-      <section className="relative z-10 section-padding max-w-[1440px] mx-auto w-full px-6 lg:px-12 bg-transparent">
+      <section className="relative z-10 section-padding max-w-[1440px] mx-auto w-full px-8 lg:px-12 bg-transparent">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="animate-fade-up">
             <span className="text-crimson-red font-black text-sm uppercase tracking-widest block mb-4 flex items-center gap-3">
@@ -135,7 +135,7 @@ export default function Home() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-midnight-blue/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                 </div>
-                <div className="p-8">
+                <div className="p-6 md:p-8">
                   <div className="flex items-center gap-3 mb-5">
                     <span className="w-1.5 h-1.5 rounded-full bg-crimson-red" />
                     <span className="text-[10px] font-black text-midnight-blue uppercase tracking-[0.2em]">{item.category || "Cobertura Nacional"}</span>
@@ -167,7 +167,7 @@ export default function Home() {
       </section>
 
       {/* Institutional Mission Accent */}
-      <section className="relative z-10 w-full bg-midnight-blue/90 py-32 md:py-48 px-6 mt-16 overflow-hidden">
+      <section className="relative z-10 w-full bg-midnight-blue/90 py-32 md:py-48 px-8 md:px-6 mt-16 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full text-white fill-current">
             <polygon points="0,100 100,0 100,100" />

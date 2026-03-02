@@ -24,7 +24,7 @@ const PublicNewsPage = () => {
     }, []);
 
     return (
-        <div className="max-w-7xl mx-auto section-padding px-6">
+        <div className="max-w-7xl mx-auto section-padding px-8 md:px-6">
             <div className="mb-20 animate-fade-up">
                 <span className="text-crimson-red font-black text-sm uppercase tracking-widest block mb-4">Sala de Prensa</span>
                 <h1 className="text-6xl md:text-8xl font-black text-midnight-blue tracking-tighter lowercase leading-[0.85]">
@@ -49,7 +49,7 @@ const PublicNewsPage = () => {
                             )}
                         </div>
 
-                        <div className="p-8">
+                        <div className="p-6 md:p-8">
                             <div className="flex justify-between items-center mb-6">
                                 <span className="text-[10px] font-black text-crimson-red uppercase tracking-[0.2em]">{item.category}</span>
                                 <span className="text-[10px] font-bold text-steel-gray uppercase tracking-widest">{new Date(item.publishedAt).toLocaleDateString()}</span>

@@ -26,7 +26,7 @@ const AcademiesPublicPage = () => {
 
     return (
         <main className="min-h-screen pt-32 pb-20 bg-mist-white/30">
-            <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
+            <div className="max-w-[1440px] mx-auto px-8 md:px-6 lg:px-12">
                 <header className="mb-16 animate-fade-up">
                     <span className="text-crimson-red font-black text-sm uppercase tracking-[0.3em] block mb-4">
                         Institucional
@@ -48,7 +48,7 @@ const AcademiesPublicPage = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-up">
                         {academies.map((academy: any) => (
-                            <div key={academy._id} className="group bg-white rounded-[2.5rem] p-10 shadow-premium hover:shadow-[0_40px_80px_rgba(0,27,72,0.12)] transition-all duration-500 border border-white/50 relative overflow-hidden flex flex-col h-full">
+                            <div key={academy._id} className="group bg-white rounded-[2.5rem] p-6 md:p-10 shadow-premium hover:shadow-[0_40px_80px_rgba(0,27,72,0.12)] transition-all duration-500 border border-white/50 relative overflow-hidden flex flex-col h-full">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-mist-white rounded-full -mr-16 -mt-16 opacity-40 group-hover:scale-110 transition-transform duration-700"></div>
 
                                 <div className="relative z-10 flex flex-col h-full">

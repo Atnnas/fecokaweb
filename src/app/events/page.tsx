@@ -32,7 +32,7 @@ const PublicEventsPage = () => {
     }, []);
 
     return (
-        <div className="max-w-7xl mx-auto section-padding px-6">
+        <div className="max-w-7xl mx-auto section-padding px-8 md:px-6">
             <div className="mb-20 animate-fade-up">
                 <span className="text-crimson-red font-black text-sm uppercase tracking-widest block mb-4">Agenda Nacional</span>
                 <h1 className="text-6xl md:text-8xl font-black text-midnight-blue tracking-tighter leading-[0.85]">
@@ -60,7 +60,7 @@ const PublicEventsPage = () => {
                 {!loading && !error && events.length > 0 ? events.map((event: any, idx) => (
                     <div
                         key={event._id}
-                        className="group relative bg-white p-10 rounded-[48px] border border-silver-accent flex flex-col lg:flex-row lg:items-center justify-between gap-10 hover:shadow-premium hover:-translate-y-2 transition-all duration-500"
+                        className="group relative bg-white p-6 md:p-10 rounded-[48px] border border-silver-accent flex flex-col lg:flex-row lg:items-center justify-between gap-10 hover:shadow-premium hover:-translate-y-2 transition-all duration-500"
                         style={{ animationDelay: `${idx * 0.1}s` }}
                     >
                         <div className="flex gap-10 items-center">
