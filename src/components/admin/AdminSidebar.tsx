@@ -5,9 +5,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const AdminSidebar = () => {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Close sidebar on path change in mobile
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
 
     const links = [
         { name: 'Dashboard', href: '/admin', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -19,10 +27,10 @@ const AdminSidebar = () => {
     ];
 
     return (
-        <aside className="w-72 bg-deep-black border-r border-white/5 flex flex-col h-full overflow-y-auto pt-8 px-5 group">
-            {/* Logo Section */}
-            <div className="mb-12 flex flex-col items-center">
-                <Link href="/" className="relative block w-[160px] h-[75px] transition-transform duration-300 hover:scale-105 mb-4">
+        <>
+            {/* Mobile Header (Only visible on small screens) */}
+            <div className="md:hidden fixed top-0 left-0 w-full h-16 bg-deep-black z-[90] flex items-center justify-between px-4 border-b border-white/5 shadow-md">
+                <Link href="/admin" className="relative block w-[100px] h-[40px]">
                     <Image
                         src="/assets/fecoka-logo-blanco.jpg"
                         alt="FECOKA"
@@ -31,56 +39,85 @@ const AdminSidebar = () => {
                         priority
                     />
                 </Link>
-                <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-            </div>
-
-            {/* Navigation Section */}
-            <nav className="flex-1 flex flex-col gap-2 mt-4">
-                <p className="text-[11px] font-black uppercase text-silver-accent/40 tracking-[0.25em] mb-4 ml-4">Administración</p>
-                {links.map((link) => {
-                    const isActive = pathname === link.href;
-                    return (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className={`flex items-center gap-4 px-5 py-4 rounded-[24px] transition-all duration-500 font-bold text-[13px] tracking-wide group/link ${isActive
-                                ? 'bg-gradient-to-br from-crimson-red to-[#9e0c1a] text-white shadow-2xl shadow-crimson-red/30 scale-[1.02]'
-                                : 'text-silver-accent/70 hover:text-white hover:bg-white/5 active:scale-95'
-                                }`}
-                        >
-                            <span className={`p-2.5 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-[#1a2b3c] group-hover/link:bg-[#253950] group-hover/link:rotate-6'}`}>
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={link.icon} />
-                                </svg>
-                            </span>
-                            <span className="max-w-[140px] leading-tight">{link.name}</span>
-                        </Link>
-                    );
-                })}
-            </nav>
-
-            {/* Footer Section */}
-            <div className="mt-auto mb-8 pt-6 border-t border-white/5 space-y-2">
-                <Link
-                    href="/"
-                    className="flex items-center gap-4 px-4 py-3 rounded-2xl text-silver-accent/40 hover:text-white hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-widest"
-                >
-                    <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Ver Sitio
-                </Link>
                 <button
-                    onClick={() => signOut({ callbackUrl: '/' })}
-                    className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-crimson-red/70 hover:text-white hover:bg-crimson-red transition-all text-xs font-black uppercase tracking-widest group/logout"
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="p-2 text-white bg-white/10 rounded-lg active:scale-95 transition-transform"
                 >
-                    <svg className="w-4 h-4 transition-transform group-hover/logout:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    Salir
+                    {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
             </div>
-        </aside>
+
+            {/* Mobile Backdrop */}
+            {isOpen && (
+                <div
+                    className="md:hidden fixed inset-0 bg-deep-black/60 backdrop-blur-sm z-[95]"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
+
+            <aside className={`fixed inset-y-0 left-0 z-[100] md:static w-72 bg-deep-black border-r border-white/5 flex flex-col h-full overflow-y-auto pt-8 px-5 group transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+                {/* Logo Section */}
+                <div className="mb-12 flex flex-col items-center">
+                    <Link href="/" className="relative block w-[160px] h-[75px] transition-transform duration-300 hover:scale-105 mb-4">
+                        <Image
+                            src="/assets/fecoka-logo-blanco.jpg"
+                            alt="FECOKA"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
+                    </Link>
+                    <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                </div>
+
+                {/* Navigation Section */}
+                <nav className="flex-1 flex flex-col gap-2 mt-4">
+                    <p className="text-[11px] font-black uppercase text-silver-accent/40 tracking-[0.25em] mb-4 ml-4">Administración</p>
+                    {links.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className={`flex items-center gap-4 px-5 py-4 rounded-[24px] transition-all duration-500 font-bold text-[13px] tracking-wide group/link ${isActive
+                                    ? 'bg-gradient-to-br from-crimson-red to-[#9e0c1a] text-white shadow-2xl shadow-crimson-red/30 scale-[1.02]'
+                                    : 'text-silver-accent/70 hover:text-white hover:bg-white/5 active:scale-95'
+                                    }`}
+                            >
+                                <span className={`p-2.5 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-[#1a2b3c] group-hover/link:bg-[#253950] group-hover/link:rotate-6'}`}>
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={link.icon} />
+                                    </svg>
+                                </span>
+                                <span className="max-w-[140px] leading-tight">{link.name}</span>
+                            </Link>
+                        );
+                    })}
+                </nav>
+
+                {/* Footer Section */}
+                <div className="mt-auto mb-8 pt-6 border-t border-white/5 space-y-2">
+                    <Link
+                        href="/"
+                        className="flex items-center gap-4 px-4 py-3 rounded-2xl text-silver-accent/40 hover:text-white hover:bg-white/5 transition-all text-xs font-bold uppercase tracking-widest"
+                    >
+                        <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Ver Sitio
+                    </Link>
+                    <button
+                        onClick={() => signOut({ callbackUrl: '/' })}
+                        className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-crimson-red/70 hover:text-white hover:bg-crimson-red transition-all text-xs font-black uppercase tracking-widest group/logout"
+                    >
+                        <svg className="w-4 h-4 transition-transform group-hover/logout:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Salir
+                    </button>
+                </div>
+            </aside>
+        </>
     );
 };
 

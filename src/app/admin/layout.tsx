@@ -18,10 +18,10 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex h-screen bg-mist-white overflow-hidden text-deep-black font-sans">
+        <div className="flex h-[100dvh] bg-mist-white overflow-hidden text-deep-black font-sans">
             <AdminSidebar />
-            <main className="flex-1 relative overflow-y-auto custom-scrollbar">
-                <div className="py-12 px-6 md:px-12 lg:px-20 w-full min-h-full flex flex-col">
+            <main className="flex-1 relative overflow-y-auto custom-scrollbar pt-16 md:pt-0">
+                <div className="py-8 md:py-12 px-4 md:px-12 lg:px-20 w-full min-h-full flex flex-col">
                     {children}
                 </div>
             </main>
