@@ -41,8 +41,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 }
 
                 return true;
-            } catch (error) {
-                console.error("Error during signIn DB injection:", error);
+            } catch (error: any) {
+                console.error("====== VERIFICATION ERROR IN SIGN-IN ======");
+                console.error("Error connecting to DB or creating user:", error?.message || error);
+                console.error("Full error object:", error);
+                console.error("===========================================");
                 return false; // Prevent login if DB fails
             }
         },

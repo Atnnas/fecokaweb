@@ -3,6 +3,7 @@ import type { NextAuthConfig } from "next-auth"
 
 // This configuration only contains parts that are compatible with the Edge runtime
 export default {
+    debug: true,
     providers: [
         Google({
             clientId: process.env.AUTH_GOOGLE_ID,
