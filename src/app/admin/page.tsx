@@ -62,19 +62,19 @@ export default function AdminDashboard() {
         <div className="w-full h-full flex flex-col gap-12 animate-fade-in font-sans">
 
             {/* Header Section - Sharp, Dark, Professional */}
-            <header className="w-full bg-midnight-blue text-white p-12 lg:p-16 border-l-8 border-crimson-red flex flex-col md:flex-row justify-between items-start md:items-end gap-6 shadow-2xl relative overflow-hidden">
+            <header className="w-full bg-midnight-blue text-white p-8 lg:p-16 border-l-4 lg:border-l-8 border-crimson-red flex flex-col md:flex-row justify-between items-start md:items-end gap-6 shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-black/20 to-transparent pointer-events-none"></div>
 
                 <div className="z-10 relative">
-                    <h1 className="text-5xl lg:text-7xl font-black mb-2 tracking-tighter uppercase leading-none mt-4">
+                    <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black mb-2 tracking-tighter uppercase leading-none mt-4">
                         CENTRO DE <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">OPERACIONES</span>
                     </h1>
                 </div>
 
                 <div className="z-10 relative">
-                    <div className="bg-black/40 border border-white/10 px-6 py-4 backdrop-blur-sm flex items-center gap-4">
+                    <div className="bg-black/40 border border-white/10 px-4 py-3 md:px-6 md:py-4 backdrop-blur-sm flex items-center gap-4">
                         <div className="w-3 h-3 bg-green-500 animate-pulse"></div>
-                        <span className="text-sm font-bold tracking-widest text-gray-300">SISTEMA EN LÍNEA</span>
+                        <span className="text-xs md:text-sm font-bold tracking-widest text-gray-300">SISTEMA EN LÍNEA</span>
                     </div>
                 </div>
             </header>
@@ -82,16 +82,16 @@ export default function AdminDashboard() {
             {/* Global Stats - Sharp Grid */}
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-white border-y border-gray-200">
                 {stats.map((stat, idx) => (
-                    <div key={stat.name} className={`group p-12 lg:p-16 flex flex-col justify-between hover:bg-gray-50 transition-colors duration-300 ${idx !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}>
-                        <div className="flex justify-between items-start mb-8">
-                            <div className={`w-14 h-14 border-2 ${stat.accent} flex items-center justify-center bg-transparent group-hover:scale-110 transition-transform duration-500`}>
-                                <svg className={`w-6 h-6 ${stat.accent.split(' ')[1]}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div key={stat.name} className={`group p-6 md:p-10 lg:p-12 flex flex-col justify-between hover:bg-gray-50 transition-colors duration-300 ${idx !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}>
+                        <div className="flex justify-between items-start mb-8 gap-4">
+                            <div className={`w-12 h-12 md:w-14 md:h-14 border-2 ${stat.accent} flex shrink-0 items-center justify-center bg-transparent group-hover:scale-110 transition-transform duration-500`}>
+                                <svg className={`w-5 h-5 md:w-6 md:h-6 ${stat.accent.split(' ')[1]}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon} />
                                 </svg>
                             </div>
-                            <span className="text-5xl lg:text-6xl font-black text-deep-black tracking-tighter">{stat.value}</span>
+                            <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-deep-black tracking-tighter text-right break-all">{stat.value}</span>
                         </div>
-                        <p className="text-steel-gray text-xs font-black tracking-[0.2em] uppercase">{stat.name}</p>
+                        <p className="text-steel-gray text-[10px] md:text-xs font-black tracking-[0.2em] uppercase leading-relaxed">{stat.name}</p>
                     </div>
                 ))}
             </div>
@@ -104,59 +104,59 @@ export default function AdminDashboard() {
                     <div className="flex-1 h-px bg-gray-300"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mt-6">
                     {/* News Module */}
-                    <Link href="/admin/news" className="group bg-midnight-blue text-white p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
+                    <Link href="/admin/news" className="group bg-midnight-blue text-white p-8 md:p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
                         <div className="absolute inset-0 bg-crimson-red translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-                        <div className="relative z-10 h-full flex flex-col gap-20 justify-between items-start">
-                            <svg className="w-16 h-16 text-white/50 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="relative z-10 h-full flex flex-col gap-16 md:gap-20 justify-between items-start">
+                            <svg className="w-12 h-12 md:w-16 md:h-16 text-white/50 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 20H5V6h14v14z M5 8h14 M9 12h6 M9 16h3" />
                             </svg>
                             <div>
-                                <p className="text-sm font-black tracking-[0.25em] text-white/60 mb-4">GESTIÓN DE</p>
-                                <h3 className="text-3xl lg:text-4xl font-black tracking-tight uppercase">Prensa Oficial</h3>
+                                <p className="text-xs md:text-sm font-black tracking-[0.25em] text-white/60 mb-3 md:mb-4">GESTIÓN DE</p>
+                                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase">Prensa Oficial</h3>
                             </div>
                         </div>
                     </Link>
 
                     {/* Events Module */}
-                    <Link href="/admin/events" className="group bg-white border-2 border-midnight-blue text-midnight-blue p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
+                    <Link href="/admin/events" className="group bg-white border-2 border-midnight-blue text-midnight-blue p-8 md:p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
                         <div className="absolute inset-0 bg-midnight-blue translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
-                        <div className="relative z-10 h-full flex flex-col gap-20 justify-between items-start">
-                            <svg className="w-16 h-16 text-midnight-blue/50 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="relative z-10 h-full flex flex-col gap-16 md:gap-20 justify-between items-start">
+                            <svg className="w-12 h-12 md:w-16 md:h-16 text-midnight-blue/50 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14V7H5v14z" />
                             </svg>
                             <div>
-                                <p className="text-sm font-black tracking-[0.25em] text-steel-gray group-hover:text-white/60 transition-colors mb-4">GESTIÓN DE</p>
-                                <h3 className="text-3xl lg:text-4xl font-black tracking-tight uppercase group-hover:text-white transition-colors">Calendario</h3>
+                                <p className="text-xs md:text-sm font-black tracking-[0.25em] text-steel-gray group-hover:text-white/60 transition-colors mb-3 md:mb-4">GESTIÓN DE</p>
+                                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase group-hover:text-white transition-colors">Calendario</h3>
                             </div>
                         </div>
                     </Link>
 
                     {/* Academies Module */}
-                    <Link href="/admin/academies" className="group bg-gray-100 border-2 border-transparent hover:border-crimson-red p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:bg-white hover:shadow-2xl">
+                    <Link href="/admin/academies" className="group bg-gray-100 border-2 border-transparent hover:border-crimson-red p-8 md:p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:bg-white hover:shadow-2xl">
                         <div className="absolute right-0 bottom-0 w-32 h-32 bg-crimson-red/5 rounded-none scale-0 group-hover:scale-150 transition-transform duration-700 ease-out origin-bottom-right"></div>
-                        <div className="relative z-10 h-full flex flex-col gap-20 justify-between items-start">
-                            <svg className="w-16 h-16 text-crimson-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="relative z-10 h-full flex flex-col gap-16 md:gap-20 justify-between items-start">
+                            <svg className="w-12 h-12 md:w-16 md:h-16 text-crimson-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M19 21V5H7v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5h2v5m-4 0h4" />
                             </svg>
                             <div>
-                                <p className="text-sm font-black tracking-[0.25em] text-steel-gray mb-4">GESTIÓN DE</p>
-                                <h3 className="text-3xl lg:text-4xl font-black tracking-tight uppercase text-deep-black">Afiliados</h3>
+                                <p className="text-xs md:text-sm font-black tracking-[0.25em] text-steel-gray mb-3 md:mb-4">GESTIÓN DE</p>
+                                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase text-deep-black">Afiliados</h3>
                             </div>
                         </div>
                     </Link>
 
                     {/* Rankings Module */}
-                    <Link href="/admin/rankings" className="group bg-deep-black text-white p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
+                    <Link href="/admin/rankings" className="group bg-deep-black text-white p-8 md:p-12 lg:p-16 xl:p-20 relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
                         <div className="absolute inset-0 border-4 border-transparent group-hover:border-crimson-red transition-colors duration-300"></div>
-                        <div className="relative z-10 h-full flex flex-col gap-20 justify-between items-start">
-                            <svg className="w-16 h-16 text-white/50 group-hover:text-crimson-red transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="relative z-10 h-full flex flex-col gap-16 md:gap-20 justify-between items-start">
+                            <svg className="w-12 h-12 md:w-16 md:h-16 text-white/50 group-hover:text-crimson-red transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                             </svg>
                             <div>
-                                <p className="text-sm font-black tracking-[0.25em] text-gray-500 group-hover:text-white/80 transition-colors mb-4">MÓDULO DE</p>
-                                <h3 className="text-3xl lg:text-4xl font-black tracking-tight uppercase">Ranking Nal.</h3>
+                                <p className="text-xs md:text-sm font-black tracking-[0.25em] text-gray-500 group-hover:text-white/80 transition-colors mb-3 md:mb-4">MÓDULO DE</p>
+                                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase">Ranking Nal.</h3>
                             </div>
                         </div>
                     </Link>
