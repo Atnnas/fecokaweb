@@ -3,7 +3,7 @@ import type { NextAuthConfig } from "next-auth"
 
 // This configuration only contains parts that are compatible with the Edge runtime
 export default {
-    debug: true,
+    debug: false,
     secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
     providers: [
         Google({
