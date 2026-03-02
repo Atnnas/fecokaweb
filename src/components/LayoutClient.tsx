@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import NavMenu from './ui/menu-hover-effects';
+import Header from './Header';
 import LoginModal from './LoginModal';
 import Footer from './Footer';
 
@@ -13,7 +13,7 @@ const LayoutClient = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-            {!isAdmin && <NavMenu onLoginClick={() => setIsLoginOpen(true)} />}
+            {!isAdmin && <Header onLoginClick={() => setIsLoginOpen(true)} />}
             <main className={isAdmin ? "" : "min-h-screen pt-24"}>
                 {children}
             </main>
