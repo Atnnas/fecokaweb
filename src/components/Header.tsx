@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
     onLoginClick: () => void;
@@ -30,24 +31,20 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
 
     // Prevent scroll when mobile menu is open
     useEffect(() => {
-        if (isMenuOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
+        document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
     }, [isMenuOpen]);
 
     return (
         <>
             <header
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-premium border-b border-white border-opacity-20 py-2' : 'bg-transparent py-4 md:py-6'
+                className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-xl shadow-premium border-b border-gray-100 py-2' : 'bg-transparent py-4 md:py-6'
                     }`}
             >
-                <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center gap-4">
+                <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between items-center h-12 md:h-16">
 
-                    {/* Logo (Left) */}
-                    <Link href="/" className="relative z-50 shrink-0">
-                        <div className="relative h-8 w-24 md:h-12 md:w-36 transition-transform hover:scale-105">
+                    {/* Logo Area */}
+                    <Link href="/" className="relative z-50 hover:opacity-90 transition-opacity">
+                        <div className="relative h-8 w-28 md:h-12 md:w-40 transition-transform hover:scale-105">
                             <Image
                                 src="/assets/fecoka-logo.jpg"
                                 alt="FECOKA Logo"
@@ -58,56 +55,52 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         </div>
                     </Link>
 
-                    {/* Desktop Navigation (Center) */}
-                    <nav className="hidden lg:flex flex-1 items-center justify-center gap-x-1 xl:gap-x-2">
+                    {/* Desktop Navigation */}
+                    <nav className="hidden lg:flex items-center gap-x-2 xl:gap-x-4">
                         {NAV_ITEMS.map((item) => {
                             const isActive = pathname === item.href;
                             return (
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className={`relative px-3 py-2 text-[13px] xl:text-[14px] font-bold tracking-wide transition-colors ${scrolled
-                                        ? isActive ? 'text-crimson-red' : 'text-midnight-blue hover:text-crimson-red'
-                                        : isActive ? 'text-crimson-red' : 'text-midnight-blue lg:text-midnight-blue hover:text-crimson-red'
+                                    className={`relative px-4 py-2 text-[14px] font-bold tracking-wide transition-colors ${isActive ? 'text-crimson-red' : 'text-midnight-blue hover:text-crimson-red'
                                         }`}
                                 >
-                                    <span className="whitespace-pre-line leading-tight block text-center">
+                                    <span className="whitespace-pre-line leading-tight block text-center uppercase tracking-tighter">
                                         {item.name}
                                     </span>
                                     {isActive && (
-                                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-crimson-red rounded-full" />
+                                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-[2.5px] bg-crimson-red rounded-full" />
                                     )}
                                 </Link>
                             );
                         })}
                     </nav>
 
-                    {/* Right Actions & Mobile Hamburger */}
-                    <div className="flex items-center gap-2 md:gap-3 shrink-0 relative z-50">
+                    {/* Actions Area */}
+                    <div className="flex items-center gap-3 relative z-50">
+                        {/* Hide "Acceso" text on mobile to keep it tidy */}
                         <button
                             onClick={onLoginClick}
-                            className={`hidden md:flex text-sm font-bold transition-colors px-4 py-2 ${scrolled ? 'text-midnight-blue hover:text-crimson-red' : 'text-midnight-blue hover:text-crimson-red'
-                                }`}
+                            className="hidden md:flex text-[13px] font-black uppercase tracking-widest text-midnight-blue hover:text-crimson-red transition-colors px-4"
                         >
                             Acceso
                         </button>
 
                         <button
                             onClick={onLoginClick}
-                            className="bg-midnight-blue text-white text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 md:px-5 py-2 md:py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-lg hover:-translate-y-0.5"
+                            className="bg-midnight-blue text-white text-[10px] md:text-xs font-black tracking-tighter md:tracking-widest uppercase px-5 py-2.5 rounded-full hover:bg-crimson-red transition-all duration-300 shadow-md active:scale-95"
                         >
                             Log In
                         </button>
 
-                        {/* Mobile Hamburger (Far Right) */}
+                        {/* Mobile Hamburger Button - ENHANCED UI */}
                         <button
                             onClick={() => setIsMenuOpen(true)}
-                            className="flex lg:hidden flex-col items-center justify-center gap-[4px] w-9 h-9 rounded-full bg-midnight-blue/5 hover:bg-midnight-blue/10 transition-colors focus:outline-none z-50 ml-1"
-                            aria-label="Abrir Menú"
+                            className="flex lg:hidden items-center justify-center w-10 h-10 rounded-xl bg-gray-100/50 hover:bg-gray-200/50 transition-colors focus:outline-none"
+                            aria-label="Menú Principal"
                         >
-                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue" />
-                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue" />
-                            <span className="block h-[2px] w-5 rounded-full bg-midnight-blue" />
+                            <Menu className="w-5 h-5 text-midnight-blue" strokeWidth={2.5} />
                         </button>
                     </div>
                 </div>
@@ -132,13 +125,10 @@ const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
                         <span className="text-midnight-blue font-black text-2xl tracking-tighter uppercase">Navegación</span>
                         <button
                             onClick={() => setIsMenuOpen(false)}
-                            className="p-2 bg-silver-accent/50 hover:bg-silver-accent rounded-full transition-colors text-midnight-blue"
+                            className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors text-midnight-blue"
                             aria-label="Cerrar Menú"
                         >
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
+                            <X className="w-6 h-6" strokeWidth={2.5} />
                         </button>
                     </div>
 
