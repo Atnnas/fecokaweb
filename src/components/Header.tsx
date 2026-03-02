@@ -261,7 +261,7 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
                     {/* Close Button Inside Sidebar Area */}
                     <button
                         onClick={() => setIsMenuOpen(false)}
-                        className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 text-white z-[120] active:scale-90"
+                        className="absolute top-10 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 text-white z-[120] active:scale-90"
                         aria-label="Cerrar Menú"
                     >
                         <X className="w-5 h-5" strokeWidth={3} />
