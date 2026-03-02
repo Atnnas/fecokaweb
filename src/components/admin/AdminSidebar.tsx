@@ -40,10 +40,10 @@ const AdminSidebar = () => {
                     />
                 </Link>
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => setIsOpen(true)}
                     className="p-2 text-white bg-white/10 rounded-lg active:scale-95 transition-transform"
                 >
-                    {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    <Menu className="w-6 h-6" />
                 </button>
             </div>
 
@@ -55,7 +55,14 @@ const AdminSidebar = () => {
                 />
             )}
 
-            <aside className={`fixed inset-y-0 left-0 z-[100] md:static w-72 bg-deep-black border-r border-white/5 flex flex-col h-full overflow-y-auto pt-8 px-5 group transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+            <aside className={`fixed inset-y-0 right-0 z-[100] md:static w-72 bg-deep-black border-l md:border-l-0 md:border-r border-white/5 flex flex-col h-full overflow-y-auto pt-8 px-5 group transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}`}>
+                {/* Close Button Inside Sidebar for Mobile */}
+                <button
+                    onClick={() => setIsOpen(false)}
+                    className="md:hidden absolute top-6 right-6 p-2 text-white bg-white/10 rounded-full active:scale-90 transition-transform z-[110]"
+                >
+                    <X className="w-5 h-5" strokeWidth={3} />
+                </button>
                 {/* Logo Section */}
                 <div className="mb-12 flex flex-col items-center">
                     <Link href="/" className="relative block w-[160px] h-[75px] transition-transform duration-300 hover:scale-105 mb-4">
@@ -79,17 +86,20 @@ const AdminSidebar = () => {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`flex items-center gap-4 px-5 py-4 rounded-[24px] transition-all duration-500 font-bold text-[13px] tracking-wide group/link ${isActive
-                                    ? 'bg-gradient-to-br from-crimson-red to-[#9e0c1a] text-white shadow-2xl shadow-crimson-red/30 scale-[1.02]'
-                                    : 'text-silver-accent/70 hover:text-white hover:bg-white/5 active:scale-95'
-                                    }`}
+                                style={{ perspective: '800px' }}
+                                className="block group/link"
                             >
-                                <span className={`p-2.5 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-[#1a2b3c] group-hover/link:bg-[#253950] group-hover/link:rotate-6'}`}>
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={link.icon} />
-                                    </svg>
-                                </span>
-                                <span className="max-w-[140px] leading-tight">{link.name}</span>
+                                <div className={`flex items-center gap-4 px-5 py-4 rounded-[24px] transition-all duration-500 font-bold text-[13px] tracking-wide transform-gpu active:scale-[0.92] active:rotate-x-12 active:-translate-y-1 ${isActive
+                                    ? 'bg-gradient-to-br from-crimson-red to-[#9e0c1a] text-white shadow-2xl shadow-crimson-red/30 scale-[1.02]'
+                                    : 'text-silver-accent/70 hover:text-white hover:bg-white/5 shadow-sm'
+                                    }`}>
+                                    <span className={`p-2.5 rounded-xl transition-all duration-300 ${isActive ? 'bg-white/20' : 'bg-[#1a2b3c] group-hover/link:bg-[#253950] group-hover/link:rotate-6'}`}>
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={link.icon} />
+                                        </svg>
+                                    </span>
+                                    <span className="max-w-[140px] leading-tight">{link.name}</span>
+                                </div>
                             </Link>
                         );
                     })}
