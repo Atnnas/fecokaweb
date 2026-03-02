@@ -82,16 +82,16 @@ export default function AdminDashboard() {
             {/* Global Stats - Sharp Grid */}
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-white border-y border-gray-200">
                 {stats.map((stat, idx) => (
-                    <div key={stat.name} className={`group p-6 md:p-10 lg:p-12 flex flex-col justify-between hover:bg-gray-50 transition-colors duration-300 ${idx !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}>
+                    <div key={stat.name} className={`group px-10 py-8 md:p-10 lg:p-12 flex flex-col justify-between hover:bg-gray-50 transition-colors duration-300 ${idx !== stats.length - 1 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}>
                         <div className="flex justify-between items-start mb-8 gap-4">
                             <div className={`w-12 h-12 md:w-14 md:h-14 border-2 ${stat.accent} flex shrink-0 items-center justify-center bg-transparent group-hover:scale-110 transition-transform duration-500`}>
                                 <svg className={`w-5 h-5 md:w-6 md:h-6 ${stat.accent.split(' ')[1]}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon} />
                                 </svg>
                             </div>
-                            <span className="text-4xl sm:text-5xl lg:text-6xl font-black text-deep-black tracking-tighter text-right break-all">{stat.value}</span>
+                            <span className="text-5xl sm:text-6xl lg:text-7xl font-black text-deep-black tracking-tighter text-right pr-2">{stat.value}</span>
                         </div>
-                        <p className="text-steel-gray text-[10px] md:text-xs font-black tracking-[0.2em] uppercase leading-relaxed">{stat.name}</p>
+                        <p className="text-steel-gray text-[11px] md:text-xs font-black tracking-[0.2em] uppercase leading-relaxed">{stat.name}</p>
                     </div>
                 ))}
             </div>
