@@ -133,19 +133,19 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                                         className="ml-10 mr-6 block group"
                                     >
                                         <div className={cn(
-                                            "flex items-center px-6 py-4 rounded-2xl transition-all duration-300 transform-gpu active:scale-[0.92] active:rotate-x-12 active:-translate-y-1 shadow-sm",
+                                            "flex items-center gap-[32px] px-[28px] py-[18px] rounded-[18px] transition-all duration-300 transform-gpu active:scale-[0.92] active:rotate-x-12 active:-translate-y-1 shadow-sm",
                                             isActive
                                                 ? "bg-white text-crimson-red shadow-md border border-silver-accent/30"
                                                 : "bg-white/40 text-midnight-blue border border-white/50 shadow-sm hover:bg-white/80 hover:text-crimson-red hover:shadow-md"
                                         )}>
                                             <div className={cn(
-                                                "mr-8 h-6 w-6 transition-colors duration-300 flex items-center justify-center",
+                                                "shrink-0 h-[28px] w-[28px] transition-colors duration-300 flex items-center justify-center",
                                                 isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
                                             )}>
                                                 {item.icon}
                                             </div>
                                             <span className={cn(
-                                                "font-semibold uppercase tracking-[0.15em] text-[13.5px] transition-colors duration-300",
+                                                "font-semibold uppercase tracking-[0.15em] text-[14px] transition-colors duration-300",
                                                 isActive ? "text-midnight-blue font-black" : "text-midnight-blue/90 group-hover:text-crimson-red"
                                             )}>
                                                 {item.label}
