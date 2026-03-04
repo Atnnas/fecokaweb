@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ShieldCheck, Globe } from "lucide-react";
-import { useApi } from "@/hooks/useApi";
+import { useApi } from "../hooks/useApi";
 
 interface Sponsor {
   _id?: string;
