@@ -65,12 +65,25 @@ export default function Home() {
         </div>
 
         <main className="relative z-10 flex flex-col items-center text-center w-full max-w-screen-2xl px-6">
+          {/* Slogan */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="max-w-2xl mb-8 md:mb-12"
+          >
+            <p className="text-white/60 font-outfit text-sm md:text-lg font-medium tracking-[0.15em] leading-relaxed uppercase">
+              Excelencia & Disciplina <br className="hidden md:block" />
+              <span className="text-white/40 tracking-[0.4em] text-[10px]">Pura Vida · Costa Rica</span>
+            </p>
+          </motion.div>
+
           {/* FECOKA Premium Logo */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-[280px] h-[120px] md:w-[460px] md:h-[180px] mb-6 md:mb-10"
+            className="relative w-[280px] h-[120px] md:w-[460px] md:h-[180px]"
           >
             <Image
               src="/assets/fecoka-logo-blanco-transparente.png"
@@ -79,19 +92,6 @@ export default function Home() {
               className="object-contain drop-shadow-[0_0_40px_rgba(255,255,255,0.1)]"
               priority
             />
-          </motion.div>
-
-          {/* Slogan */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 1 }}
-            className="max-w-2xl"
-          >
-            <p className="text-white/60 font-outfit text-sm md:text-lg font-medium tracking-[0.15em] leading-relaxed uppercase">
-              Excelencia & Disciplina <br className="hidden md:block" />
-              <span className="text-white/40 tracking-[0.4em] text-[10px]">Pura Vida · Costa Rica</span>
-            </p>
           </motion.div>
         </main>
 
