@@ -1,199 +1,176 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { motion } from "framer-motion";
+import { ShieldCheck, Globe } from "lucide-react";
+import { useApi } from "@/hooks/useApi";
+
+interface Sponsor {
+  _id?: string;
+  name: string;
+  logoUrl: string;
+  websiteUrl?: string;
+}
 
 export default function Home() {
-  const [news, setNews] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [logoFile, setLogoFile] = useState<{ file: File, preview: string } | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    logoUrl: '',
+    websiteUrl: ''
+  });
+
+  // Use the new useApi hook for standardized fetching
+  const {
+    data: dbSponsors,
+    loading: sponsorsLoading
+  } = useApi<Sponsor[]>('/api/sponsors');
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const res = await fetch('/api/news');
-        if (res.ok) {
-          const data = await res.json();
-          // Solo mostrar las 3 últimas
-          setNews(data.slice(0, 3));
-        }
-      } catch (error) {
-        console.error("Error fetching news:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNews();
+    setMounted(true);
   }, []);
 
+  if (!mounted) return null;
+
+  // Defensive data selection: only use DB sponsors
+  const sponsors = Array.isArray(dbSponsors) ? dbSponsors : [];
+
   return (
-    <div className="flex flex-col items-center relative min-h-screen">
-      {/* Fixed Centered Background */}
-      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-        <Image
-          src="/assets/seleccion-integrantes.jpg"
-          alt="Selección Nacional de Karate"
-          fill
-          priority
-          className="object-cover object-center opacity-40 brightness-90 transition-all duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/20 to-midnight-blue/40" />
-      </div>
+    <div ref={containerRef} className="relative w-full min-h-screen overflow-x-hidden bg-[#0a0a0d] flex flex-col items-center">
 
-      {/* Premium Hero Section */}
-      <section className="relative z-10 w-full h-[100vh] min-h-[700px] flex items-center justify-center overflow-hidden bg-transparent">
-
-        {/* Architectural Background Accents */}
-        <div className="absolute top-0 right-0 w-[60%] h-full bg-midnight-blue/[0.03] -skew-x-12 translate-x-1/4" />
-        <div className="absolute top-1/2 left-0 w-[40%] h-[1px] bg-crimson-red/20" />
-
-        {/* Subtle Federation Graphic */}
-        <div className="absolute inset-0 z-0 opacity-5 pointer-events-none flex items-center justify-center overflow-hidden">
-          <Image
-            src="/assets/fecoka-logo.jpg"
-            alt="Federation Background"
-            width={800}
-            height={800}
-            className="object-contain scale-[1.5] rotate-6 blur-[2px]"
-          />
+      {/* Hero Section */}
+      <section className="relative w-full h-[90vh] flex flex-col items-center justify-center overflow-hidden pt-20 md:pt-32">
+        {/* Cinematic Background */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none top-0">
+          <motion.div
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1.05 }}
+            transition={{ duration: 10, ease: "easeOut" }}
+            className="relative w-full h-full"
+          >
+            <Image
+              src="/assets/seleccion-integrantes.jpg"
+              alt="Fondo FECOKA"
+              fill
+              className="object-cover saturate-[1.2] brightness-[0.7] contrast-[1.1]"
+              style={{ objectPosition: "center 0%" }}
+              priority
+            />
+          </motion.div>
+          {/* Subtle gradient overlay for depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0a0a0d]" />
         </div>
 
-        <div className="relative z-10 text-center px-8 md:px-6 max-w-5xl animate-fade-up">
-          <div className="inline-flex items-center gap-3 px-6 py-2.5 mb-8 rounded-full bg-white border border-silver-accent shadow-premium">
-            <span className="w-2 h-2 rounded-full bg-crimson-red animate-pulse" />
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-midnight-blue">
-              Karate Do Oficial Costa Rica
-            </span>
+        <main className="relative z-10 flex flex-col items-center text-center w-full max-w-screen-2xl px-6">
+          {/* FECOKA Premium Logo */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-[280px] h-[120px] md:w-[460px] md:h-[180px] mb-6 md:mb-10"
+          >
+            <Image
+              src="/assets/fecoka-logo-blanco-transparente.png"
+              alt="FECOKA Logo"
+              fill
+              className="object-contain drop-shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+              priority
+            />
+          </motion.div>
+
+          {/* Slogan */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="max-w-2xl"
+          >
+            <p className="text-white/60 font-outfit text-sm md:text-lg font-medium tracking-[0.15em] leading-relaxed uppercase">
+              Excelencia & Disciplina <br className="hidden md:block" />
+              <span className="text-white/40 tracking-[0.4em] text-[10px]">Pura Vida · Costa Rica</span>
+            </p>
+          </motion.div>
+        </main>
+
+        {/* Decorative Floating Info */}
+        <div className="absolute left-10 bottom-10 hidden xl:flex flex-col gap-4 opacity-20 pointer-events-none">
+          <div className="flex items-center gap-4 text-white">
+            <Globe className="w-3 h-3" />
+            <span className="text-[9px] font-black uppercase tracking-[0.4em]">Official Federation</span>
           </div>
-
-          <h1 className="text-6xl md:text-8xl lg:text-[110px] font-black text-midnight-blue mb-8 leading-[0.85] tracking-tighter">
-            KARATE <br />
-            <span className="text-crimson-red">EXCELENCIA</span>
-          </h1>
-
-          <p className="text-lg md:text-2xl text-steel-gray mb-14 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight px-6 md:px-8">
-            Forjando el carácter nacional a través de la disciplina, el respeto inquebrantable y la tradición milenaria del Karate-Do.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-            <Link href="/rankings" className="btn-premium bg-midnight-blue hover:bg-crimson-red text-white group px-8 py-5">
-              Explorar Rankings
-              <svg
-                className="w-5 h-5 ml-3 transition-transform group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-            <Link href="/events" className="btn-premium bg-white border border-silver-accent hover:border-midnight-blue text-midnight-blue px-8 py-5 shadow-sm hover:shadow-premium">
-              Catálogo de Eventos
-            </Link>
+          <div className="flex items-center gap-4 text-white">
+            <ShieldCheck className="w-3 h-3" />
+            <span className="text-[9px] font-black uppercase tracking-[0.4em]">Olympic Certified</span>
           </div>
-        </div>
-
-        {/* Scroll affordance */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 opacity-40">
-          <span className="text-[10px] font-black tracking-[0.3em] uppercase rotate-90 origin-left translate-x-2 text-midnight-blue">
-            Scroll
-          </span>
-          <div className="w-[1px] h-16 bg-gradient-to-b from-midnight-blue to-transparent" />
         </div>
       </section>
 
-      {/* Featured News / Grid Section */}
-      <section className="relative z-10 section-padding max-w-[1440px] mx-auto w-full px-8 lg:px-12 bg-transparent">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="animate-fade-up">
-            <span className="text-crimson-red font-black text-sm uppercase tracking-widest block mb-4 flex items-center gap-3">
-              <div className="w-8 h-[2px] bg-crimson-red" /> Sala de Prensa
-            </span>
-            <h2 className="text-5xl md:text-7xl font-black text-midnight-blue tracking-tighter leading-none">Ecos del Tatami</h2>
+      {/* Sponsors Section */}
+      <section className="w-full py-24 bg-[#0a0a0d] border-t border-white/5 overflow-hidden">
+        <div className="max-w-screen-xl mx-auto px-6 mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white/90 mb-3 italic">Partners</h2>
+            <div className="w-16 h-1 bg-crimson mx-auto md:mx-0 shadow-[0_0_15px_rgba(217,4,41,0.5)]" />
           </div>
-          <Link href="/news" className="text-midnight-blue font-bold text-lg hover:text-crimson-red transition-all flex items-center gap-3 group border-b border-transparent hover:border-crimson-red pb-1">
-            Ver todas las publicaciones
-            <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </Link>
+          <p className="max-w-sm text-[11px] font-bold text-white/30 uppercase tracking-[0.3em] text-center md:text-right leading-relaxed">
+            Impulsando el karate costarricense hacia el escenario mundial.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          {!loading ? (
-            news.map((item: any, i) => (
-              <div key={item._id} className="group relative bg-white rounded-[32px] p-2 border border-silver-accent shadow-sm hover:shadow-premium hover:-translate-y-2 transition-all duration-500">
-                <div className="relative h-64 md:h-80 rounded-[24px] bg-mist-white overflow-hidden">
-                  {item.images && item.images.length > 0 ? (
-                    <img
-                      src={item.images[0]}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                    />
+        {/* Sponsors Refined Ticker (One-at-a-time, Seamless Loop) */}
+        <div className="relative w-full overflow-hidden py-12">
+          {/* Edge Gradients for Premium Look */}
+          <div className="absolute inset-y-0 left-0 w-24 md:w-64 bg-gradient-to-r from-[#0a0a0d] to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 md:w-64 bg-gradient-to-l from-[#0a0a0d] to-transparent z-20 pointer-events-none" />
+
+          <motion.div
+            className="flex items-center w-max"
+            animate={{
+              x: [0, `-${sponsors.length * 100}vw`],
+            }}
+            transition={{
+              duration: Math.max(15, sponsors.length * 15),
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            {[...sponsors, ...sponsors].map((sponsor, i) => (
+              <div
+                key={`${sponsor._id}-${i}`}
+                className="w-[100vw] flex items-center justify-center shrink-0 px-12"
+              >
+                <div className="relative h-12 md:h-24 w-48 md:w-80 flex items-center justify-center grayscale invert opacity-30 hover:opacity-100 hover:grayscale-0 hover:invert-0 transition-all duration-700 group cursor-pointer">
+                  {sponsor.websiteUrl ? (
+                    <a href={sponsor.websiteUrl} target="_blank" rel="noopener noreferrer" className="h-full w-full flex items-center justify-center">
+                      <img
+                        src={sponsor.logoUrl}
+                        alt={sponsor.name}
+                        className="max-h-full max-w-full object-contain filter group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                      />
+                    </a>
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-midnight-blue/10 font-black text-5xl tracking-tighter italic">FECOKA</span>
+                    <div className="h-full w-full flex items-center justify-center">
+                      <img
+                        src={sponsor.logoUrl}
+                        alt={sponsor.name}
+                        className="max-h-full max-w-full object-contain filter group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                      />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight-blue/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                </div>
-                <div className="p-6 md:p-8">
-                  <div className="flex items-center gap-3 mb-5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-crimson-red" />
-                    <span className="text-[10px] font-black text-midnight-blue uppercase tracking-[0.2em]">{item.category || "Cobertura Nacional"}</span>
-                  </div>
-                  <h3 className="text-2xl font-black leading-tight mb-4 group-hover:text-crimson-red transition-colors text-midnight-blue line-clamp-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-steel-gray font-medium text-sm line-clamp-2 mb-8">
-                    {item.content}
-                  </p>
-                  <div className="flex items-center justify-between pt-6 border-t border-silver-accent/50">
-                    <span className="text-[10px] font-bold text-steel-gray uppercase tracking-widest">
-                      {new Date(item.publishedAt).toLocaleDateString()}
-                    </span>
-                    <Link href={`/news/${item._id}`} className="w-10 h-10 rounded-full border border-silver-accent flex items-center justify-center text-midnight-blue group-hover:bg-crimson-red group-hover:text-white group-hover:border-crimson-red transition-all shadow-sm">
-                      <svg className="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" /></svg>
-                    </Link>
-                  </div>
                 </div>
               </div>
-            ))
-          ) : (
-            // Skeletons
-            [1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse bg-white/50 rounded-[32px] p-2 border border-silver-accent h-[500px]" />
-            ))
-          )}
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* Institutional Mission Accent */}
-      <section className="relative z-10 w-full bg-midnight-blue/90 py-32 md:py-48 px-8 md:px-6 mt-16 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full text-white fill-current">
-            <polygon points="0,100 100,0 100,100" />
-          </svg>
-        </div>
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-16 tracking-tighter leading-[1.1]">
-            "El Karate no es solo para la academia, <br />
-            <span className="text-crimson-red">es para toda la vida.</span>"
-          </h2>
-          <div className="flex justify-center gap-12 md:gap-24 flex-wrap">
-            <div className="flex flex-col items-center group">
-              <span className="text-white/40 group-hover:text-white transition-colors text-xs font-bold uppercase tracking-[0.3em] mb-4">Disciplina</span>
-              <div className="w-[2px] h-12 bg-crimson-red group-hover:h-16 transition-all duration-300" />
-            </div>
-            <div className="flex flex-col items-center group">
-              <span className="text-white/40 group-hover:text-white transition-colors text-xs font-bold uppercase tracking-[0.3em] mb-4">Respeto</span>
-              <div className="w-[2px] h-12 bg-white group-hover:h-16 transition-all duration-300" />
-            </div>
-            <div className="flex flex-col items-center group">
-              <span className="text-white/40 group-hover:text-white transition-colors text-xs font-bold uppercase tracking-[0.3em] mb-4">Honor</span>
-              <div className="w-[2px] h-12 bg-crimson-red group-hover:h-16 transition-all duration-300" />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Background Brand Text */}
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 pointer-events-none opacity-[0.03]">
+        <span className="text-[30vw] font-black uppercase leading-none italic select-none text-white">FECOKA</span>
+      </div>
     </div>
   );
 }

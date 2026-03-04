@@ -6,6 +6,8 @@ import Academy from '@/models/Academy';
 import User from '@/models/User';
 import { auth } from '@/auth';
 
+import Sponsor from '@/models/Sponsor';
+
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
@@ -21,20 +23,20 @@ export async function GET() {
     try {
         await dbConnect();
 
-        const [newsCount, eventsCount, academiesCount, usersCount] = await Promise.all([
+        const [newsCount, eventsCount, academiesCount, usersCount, sponsorsCount] = await Promise.all([
             News.countDocuments({}),
             Event.countDocuments({}),
             Academy.countDocuments({}),
-            User.countDocuments({})
+            User.countDocuments({}),
+            Sponsor.countDocuments({})
         ]);
-
-        console.log("Stats debug:", { newsCount, eventsCount, academiesCount, usersCount });
 
         return NextResponse.json({
             news: newsCount,
             events: eventsCount,
             academies: academiesCount,
-            users: usersCount
+            users: usersCount,
+            sponsors: sponsorsCount
         });
     } catch (error) {
         console.error("Error fetching admin stats:", error);
