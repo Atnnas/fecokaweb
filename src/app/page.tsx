@@ -70,7 +70,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 1 }}
-            className="max-w-2xl mb-8 md:mb-12"
+            className="max-w-2xl mb-16 md:mb-24"
           >
             <p className="text-white/60 font-outfit text-sm md:text-lg font-medium tracking-[0.15em] leading-relaxed uppercase">
               Excelencia & Disciplina <br className="hidden md:block" />
@@ -83,7 +83,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-[280px] h-[120px] md:w-[460px] md:h-[180px]"
+            className="relative w-[280px] h-[120px] md:w-[460px] md:h-[180px] mt-4 md:mt-8"
           >
             <Image
               src="/assets/fecoka-logo-blanco-transparente.png"
