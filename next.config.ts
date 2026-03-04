@@ -9,9 +9,38 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'concrc.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.icoder.go.cr',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.arawaza.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'infobae.com',
       }
     ],
+  },
+  experimental: {
+    turbo: {
+      root: 'C:/Dev/fecoka-web',
+    },
   },
   async headers() {
     return [
@@ -37,10 +66,6 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
           },
         ],
       },

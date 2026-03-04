@@ -4,6 +4,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
 export async function POST(req: Request) {
+    console.log("POST /api/upload request received");
     const session = await auth();
 
     if (!session || session.user?.role === 'user') {

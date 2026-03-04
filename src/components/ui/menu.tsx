@@ -136,11 +136,11 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                                             "flex items-center gap-[32px] px-[28px] py-[18px] rounded-[18px] transition-all duration-300 transform-gpu active:scale-[0.92] active:rotate-x-12 active:-translate-y-1 shadow-sm",
                                             isActive
                                                 ? "bg-white text-crimson-red shadow-md border border-silver-accent/30"
-                                                : "bg-white/40 text-midnight-blue border border-white/50 shadow-sm hover:bg-white/80 hover:text-crimson-red hover:shadow-md"
+                                                : "bg-white/95 text-midnight-blue border border-silver-accent/50 shadow-sm hover:bg-white hover:text-crimson-red hover:shadow-md"
                                         )}>
                                             <div className={cn(
                                                 "shrink-0 h-[28px] w-[28px] transition-colors duration-300 flex items-center justify-center",
-                                                isActive ? "text-crimson-red" : "text-steel-gray group-hover:text-crimson-red"
+                                                isActive ? "text-crimson-red" : "text-midnight-blue/70 group-hover:text-crimson-red"
                                             )}>
                                                 {item.icon}
                                             </div>

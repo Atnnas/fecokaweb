@@ -23,12 +23,20 @@ import { UserProfileSidebar, NavItem, UserProfile } from '@/components/ui/menu';
 const AdminSidebar = () => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
     const { data: session } = useSession();
+
+    // Handle hydration symmetry
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Close sidebar on path change in mobile
     useEffect(() => {
-        setIsOpen(false);
-    }, [pathname]);
+        if (mounted) {
+            setIsOpen(false);
+        }
+    }, [pathname, mounted]);
 
     const adminLinks = [
         { name: 'Dashboard', href: '/admin', icon: <LayoutDashboard className="h-full w-full" /> },
@@ -37,6 +45,7 @@ const AdminSidebar = () => {
         { name: 'Usuarios', href: '/admin/users', icon: <Users className="h-full w-full" /> },
         { name: 'Academias Afiliadas', href: '/admin/academies', icon: <School className="h-full w-full" /> },
         { name: 'Rankings', href: '/admin/rankings', icon: <Trophy className="h-full w-full" /> },
+        { name: 'Patrocinadores', href: '/admin/sponsors', icon: <Shield className="h-full w-full" /> },
     ];
 
     const userProfile: UserProfile = {
@@ -93,36 +102,38 @@ const AdminSidebar = () => {
             </div>
 
             {/* Mobile Premium Sidebar Interface */}
-            <div
-                className={`fixed inset-0 z-[110] md:hidden transition-all duration-500 ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-            >
-                {/* Backdrop Blur Overlay */}
+            {mounted && (
                 <div
-                    className={`absolute inset-0 bg-midnight-blue/60 backdrop-blur-md transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-                    onClick={() => setIsOpen(false)}
-                />
-
-                {/* Sliding Sidebar */}
-                <div className={`absolute top-0 left-0 h-[100dvh] w-[85%] max-w-xs transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                    <UserProfileSidebar
-                        user={userProfile}
-                        navItems={navItems}
-                        activeHref={pathname}
-                        logoutItem={logoutItem}
-                        onMenuItemClick={() => setIsOpen(false)}
-                        className="h-full rounded-none border-0 shadow-none"
+                    className={`fixed inset-0 z-[110] md:hidden transition-all duration-500 ${isOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}
+                >
+                    {/* Backdrop Blur Overlay */}
+                    <div
+                        className={`absolute inset-0 bg-midnight-blue/60 backdrop-blur-md transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                        onClick={() => setIsOpen(false)}
                     />
 
-                    {/* Close Button Inside Sidebar Area */}
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="absolute top-10 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 text-white z-[120] active:scale-90"
-                        aria-label="Cerrar Menú"
-                    >
-                        <X className="w-5 h-5" strokeWidth={3} />
-                    </button>
+                    {/* Sliding Sidebar */}
+                    <div className={`absolute top-0 left-0 h-[100dvh] w-[85%] max-w-xs transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                        <UserProfileSidebar
+                            user={userProfile}
+                            navItems={navItems}
+                            activeHref={pathname}
+                            logoutItem={logoutItem}
+                            onMenuItemClick={() => setIsOpen(false)}
+                            className="h-full rounded-none border-0 shadow-none"
+                        />
+
+                        {/* Close Button Inside Sidebar Area */}
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="absolute top-10 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 text-white z-[120] active:scale-90"
+                            aria-label="Cerrar Menú"
+                        >
+                            <X className="w-5 h-5" strokeWidth={3} />
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Desktop Sidebar (Remains consistent with current admin design) */}
             <aside className="hidden md:flex w-72 bg-deep-black border-r border-white/5 flex-col h-full overflow-y-auto pt-8 px-5 group">

@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import dbConnect from "@/lib/db"
 import User from "@/models/User"
+import { isSuperAdmin } from "@/lib/auth-utils"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     trustHost: true,
@@ -16,14 +17,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
                 // Find existing user or create a new one with 'user' role by default
                 let dbUser = await User.findOne({ email: user.email });
+                const isSystemAdmin = isSuperAdmin(user.email);
 
                 if (!dbUser) {
                     dbUser = await User.create({
                         name: user.name,
                         email: user.email,
                         image: user.image,
-                        role: user.email === 'david.artavia.rodriguez@gmail.com' ? 'admin' : 'user',
-                        status: user.email === 'david.artavia.rodriguez@gmail.com' ? 'active' : 'pending',
+                        role: isSystemAdmin ? 'admin' : 'user',
+                        status: isSystemAdmin ? 'active' : 'pending',
                     });
                 } else {
                     // Update last login
@@ -32,7 +34,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     dbUser.image = user.image;
 
                     // Auto-admin for the main account
-                    if (user.email === 'david.artavia.rodriguez@gmail.com') {
+                    if (isSystemAdmin) {
                         dbUser.role = 'admin';
                         dbUser.status = 'active';
                     }

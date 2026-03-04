@@ -2,27 +2,18 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import News from '@/models/News';
 import { auth } from '@/auth';
-
+import { canEdit } from '@/lib/auth-utils';
+import { NewsSchema } from '@/lib/validations/news';
 import { z } from 'zod';
-
-const NewsSchema = z.object({
-    title: z.string().min(1, "El título es muy corto").max(200),
-    content: z.string().min(1, "El contenido es muy corto"),
-    category: z.string().optional(),
-    images: z.array(z.string()).optional(),
-    publishedAt: z.string().datetime().optional().default(() => new Date().toISOString()),
-    startDate: z.string().datetime().optional().default(() => new Date().toISOString()),
-    endDate: z.string().datetime().nullable().optional(),
-});
 
 export async function GET(req: Request) {
     await dbConnect();
     const { searchParams } = new URL(req.url);
-    const isAdmin = searchParams.get('admin') === 'true';
+    const isAdminView = searchParams.get('admin') === 'true';
 
     try {
         let query = {};
-        if (!isAdmin) {
+        if (!isAdminView) {
             const now = new Date();
             query = {
                 $and: [
@@ -47,7 +38,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
     const session = await auth();
 
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized: Insufficient permissions' }, { status: 403 });
     }
 
@@ -67,11 +58,11 @@ export async function POST(req: Request) {
     }
 }
 
-// PATCH update news (Admin only)
+// PATCH update news (Admin/Editor only)
 export async function PATCH(req: Request) {
     const session = await auth();
 
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -96,11 +87,11 @@ export async function PATCH(req: Request) {
     }
 }
 
-// DELETE news (Admin only)
+// DELETE news (Admin/Editor only)
 export async function DELETE(req: Request) {
     const session = await auth();
 
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
