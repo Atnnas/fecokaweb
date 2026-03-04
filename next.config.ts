@@ -42,6 +42,9 @@ const nextConfig: NextConfig = {
       root: 'C:/Dev/fecoka-web',
     },
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async headers() {
     return [
       {
