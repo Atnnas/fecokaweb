@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Sponsor from '@/models/Sponsor';
 import { auth } from '@/auth';
-import { canEdit } from '@/lib/auth-utils';
+import { canEdit } from '../../../lib/auth-utils';
 import { SponsorSchema } from '@/lib/validations/sponsor';
 import { z } from 'zod';
 
