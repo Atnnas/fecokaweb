@@ -70,15 +70,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const { auth } = require("@/auth");
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="es" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${inter.variable} ${outfit.variable} font-sans antialiased text-deep-black bg-mist-white`}>
-        <Providers>
+        <Providers session={session}>
           <ErrorBoundary>
             <LayoutClient>
               {children}

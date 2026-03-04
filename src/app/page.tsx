@@ -78,21 +78,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          {/* FECOKA Premium Logo */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-[280px] h-[120px] md:w-[460px] md:h-[180px] mt-4 md:mt-8"
-          >
-            <Image
-              src="/assets/fecoka-logo-blanco-transparente.png"
-              alt="FECOKA Logo"
-              fill
-              className="object-contain drop-shadow-[0_0_40px_rgba(255,255,255,0.1)]"
-              priority
-            />
-          </motion.div>
+
         </main>
 
         {/* Decorative Floating Info */}
