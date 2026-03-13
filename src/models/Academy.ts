@@ -6,6 +6,7 @@ const AcademySchema = new Schema({
     location: { type: String, required: true },
     contact: { type: String },
     logo: { type: String },
+    instructorPhoto: { type: String },
     website: { type: String },
     isActive: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },

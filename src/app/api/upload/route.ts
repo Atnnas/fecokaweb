@@ -30,8 +30,8 @@ export async function POST(req: Request) {
         }
 
         for (const file of files) {
-            if (!file.type.startsWith('image/')) {
-                continue; // Skip non-image files
+            if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+                continue; // Skip non-image/non-pdf files
             }
 
             const bytes = await file.arrayBuffer();

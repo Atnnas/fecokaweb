@@ -16,7 +16,8 @@ import {
     Trophy,
     ArrowLeft,
     LogOut,
-    Shield
+    Shield,
+    Tags
 } from 'lucide-react';
 import { UserProfileSidebar, NavItem, UserProfile } from '@/components/ui/menu';
 
@@ -44,6 +45,7 @@ const AdminSidebar = () => {
         { name: 'Eventos', href: '/admin/events', icon: <Calendar className="h-full w-full" /> },
         { name: 'Usuarios', href: '/admin/users', icon: <Users className="h-full w-full" /> },
         { name: 'Academias Afiliadas', href: '/admin/academies', icon: <School className="h-full w-full" /> },
+        { name: 'Categorías WKF', href: '/admin/categories', icon: <Tags className="h-full w-full" /> },
         { name: 'Rankings', href: '/admin/rankings', icon: <Trophy className="h-full w-full" /> },
         { name: 'Patrocinadores', href: '/admin/sponsors', icon: <Shield className="h-full w-full" /> },
     ];

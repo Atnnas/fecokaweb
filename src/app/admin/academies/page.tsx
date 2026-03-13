@@ -12,9 +12,13 @@ const AdminAcademiesPage = () => {
         instructor: '',
         location: '',
         contact: '',
+        logo: '',
+        instructorPhoto: '',
         website: '',
         isActive: true
     });
+    const [logoFile, setLogoFile] = useState<{ file: File, preview: string } | null>(null);
+    const [instructorFile, setInstructorFile] = useState<{ file: File, preview: string } | null>(null);
     const [loading, setLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
 
@@ -39,11 +43,15 @@ const AdminAcademiesPage = () => {
 
     const handleEdit = (item: any) => {
         setEditingItem(item);
+        setLogoFile(null);
+        setInstructorFile(null);
         setFormData({
             name: item.name,
             instructor: item.instructor,
             location: item.location,
             contact: item.contact || '',
+            logo: item.logo || '',
+            instructorPhoto: item.instructorPhoto || '',
             website: item.website || '',
             isActive: item.isActive ?? true
         });
@@ -73,16 +81,43 @@ const AdminAcademiesPage = () => {
         e.preventDefault();
         setLoading(true);
         try {
+            let logoUrl = formData.logo;
+            let instructorPhotoUrl = formData.instructorPhoto;
+
+            // Upload Logo
+            if (logoFile) {
+                const uploadData = new FormData();
+                uploadData.append('files', logoFile.file);
+                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadData });
+                if (!uploadRes.ok) throw new Error('Error al subir el logo');
+                const { urls } = await uploadRes.json();
+                logoUrl = urls[0];
+            }
+
+            // Upload Instructor Photo
+            if (instructorFile) {
+                const uploadData = new FormData();
+                uploadData.append('files', instructorFile.file);
+                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadData });
+                if (!uploadRes.ok) throw new Error('Error al subir la foto del instructor');
+                const { urls } = await uploadRes.json();
+                instructorPhotoUrl = urls[0];
+            }
+
+            const payload = {
+                ...formData,
+                logo: logoUrl,
+                instructorPhoto: instructorPhotoUrl
+            };
+
             const res = await fetch('/api/academies', {
                 method: editingItem ? 'PATCH' : 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(editingItem ? { id: editingItem._id, ...formData } : formData),
+                body: JSON.stringify(editingItem ? { id: editingItem._id, ...payload } : payload),
             });
             if (res.ok) {
-                setIsModalOpen(false);
-                setEditingItem(null);
+                handleCloseModal();
                 fetchAcademies();
-                setFormData({ name: '', instructor: '', location: '', contact: '', website: '', isActive: true });
             } else {
                 const errorData = await res.json();
                 console.error('API Error:', errorData);
@@ -99,7 +134,11 @@ const AdminAcademiesPage = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setEditingItem(null);
-        setFormData({ name: '', instructor: '', location: '', contact: '', website: '', isActive: true });
+        if (logoFile) URL.revokeObjectURL(logoFile.preview);
+        if (instructorFile) URL.revokeObjectURL(instructorFile.preview);
+        setLogoFile(null);
+        setInstructorFile(null);
+        setFormData({ name: '', instructor: '', location: '', contact: '', logo: '', instructorPhoto: '', website: '', isActive: true });
     };
 
     return (
@@ -250,6 +289,86 @@ const AdminAcademiesPage = () => {
                                                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                                     className="w-full px-8 py-5 bg-mist-white border-2 border-transparent focus:border-midnight-blue focus:bg-white outline-none transition-all font-bold text-midnight-blue placeholder:text-silver-accent shadow-inner"
                                                 />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                            <div className="space-y-4">
+                                                <div className="flex justify-between items-center ml-3">
+                                                    <label className="block text-[11px] font-black text-midnight-blue uppercase tracking-[0.25em]">Logo del Dojo</label>
+                                                </div>
+                                                <div className="relative aspect-square w-full sm:w-48 bg-mist-white border border-silver-accent/20 overflow-hidden shadow-sm group/img mx-auto sm:mx-0">
+                                                    {(logoFile?.preview || formData.logo) ? (
+                                                        <>
+                                                            <img src={logoFile?.preview || formData.logo} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" alt="Logo" />
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => { setLogoFile(null); setFormData({ ...formData, logo: '' }); }}
+                                                                className="absolute top-2 right-2 w-7 h-7 bg-white/90 text-crimson-red hover:bg-crimson-red hover:text-white transition-all flex items-center justify-center shadow-md backdrop-blur-sm"
+                                                            >
+                                                                <svg className="w-4 h-4 shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <input
+                                                                type="file" accept="image/*"
+                                                                onChange={(e) => {
+                                                                    if (e.target.files && e.target.files[0]) {
+                                                                        const file = e.target.files[0];
+                                                                        setLogoFile({ file, preview: URL.createObjectURL(file) });
+                                                                    }
+                                                                }}
+                                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                            />
+                                                            <div className="w-full h-full border-2 border-dashed border-midnight-blue/20 bg-mist-white/50 flex flex-col items-center justify-center gap-2 group-hover:bg-crimson-red/5 group-hover:border-crimson-red/30 transition-all">
+                                                                <div className="w-8 h-8 bg-midnight-blue/5 flex items-center justify-center text-midnight-blue group-hover:text-crimson-red transition-colors">
+                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
+                                                                </div>
+                                                                <span className="text-[9px] font-black uppercase text-midnight-blue tracking-widest text-center px-2">Subir<br />Logo</span>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-4">
+                                                <div className="flex justify-between items-center ml-3">
+                                                    <label className="block text-[11px] font-black text-midnight-blue uppercase tracking-[0.25em]">Foto del Instructor</label>
+                                                </div>
+                                                <div className="relative aspect-square w-full sm:w-48 bg-mist-white border border-silver-accent/20 overflow-hidden shadow-sm group/img mx-auto sm:mx-0">
+                                                    {(instructorFile?.preview || formData.instructorPhoto) ? (
+                                                        <>
+                                                            <img src={instructorFile?.preview || formData.instructorPhoto} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" alt="Instructor" />
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => { setInstructorFile(null); setFormData({ ...formData, instructorPhoto: '' }); }}
+                                                                className="absolute top-2 right-2 w-7 h-7 bg-white/90 text-crimson-red hover:bg-crimson-red hover:text-white transition-all flex items-center justify-center shadow-md backdrop-blur-sm"
+                                                            >
+                                                                <svg className="w-4 h-4 shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <input
+                                                                type="file" accept="image/*"
+                                                                onChange={(e) => {
+                                                                    if (e.target.files && e.target.files[0]) {
+                                                                        const file = e.target.files[0];
+                                                                        setInstructorFile({ file, preview: URL.createObjectURL(file) });
+                                                                    }
+                                                                }}
+                                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                            />
+                                                            <div className="w-full h-full border-2 border-dashed border-midnight-blue/20 bg-mist-white/50 flex flex-col items-center justify-center gap-2 group-hover:bg-crimson-red/5 group-hover:border-crimson-red/30 transition-all">
+                                                                <div className="w-8 h-8 bg-midnight-blue/5 flex items-center justify-center text-midnight-blue group-hover:text-crimson-red transition-colors">
+                                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                                                </div>
+                                                                <span className="text-[9px] font-black uppercase text-midnight-blue tracking-widest text-center px-2">Subir<br />Foto</span>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
 

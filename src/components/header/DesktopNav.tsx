@@ -29,7 +29,7 @@ export default function DesktopNav({ menuItems, pathname, session, onSignOut, on
                 <ul className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 lg:gap-8 w-full">
                     {/* Official FECOKA White Logo */}
                     <li className="list-none flex items-center justify-center md:mr-2 lg:mr-6">
-                        <Link href="/" className="relative block w-[160px] h-[75px] md:w-[200px] md:h-[95px] lg:w-[240px] lg:h-[115px] transition-transform duration-300 hover:scale-105">
+                        <Link href="/" className="relative block w-32 h-10 md:w-40 md:h-12 lg:w-48 lg:h-14 transition-transform duration-300 hover:scale-105">
                             <Image
                                 src="/assets/fecoka-logo-blanco-transparente.png"
                                 alt="FECOKA"
@@ -45,12 +45,11 @@ export default function DesktopNav({ menuItems, pathname, session, onSignOut, on
                             <li key={item.label} className="list-none md:w-auto text-center">
                                 <Link
                                     href={item.href}
-                                    className="relative inline-block group w-full md:w-auto mx-1"
+                                    className="relative inline-flex items-center justify-center group h-full px-2 md:px-3 lg:px-4 py-3 md:py-4"
                                 >
                                     <span className={
                                         "relative z-10 block uppercase font-sans font-black transition-colors duration-300 group-hover:text-white " +
-                                        "text-xl md:text-sm lg:text-[15px] xl:text-[17px] " +
-                                        "pt-8 pb-3 px-3 md:pt-10 md:pb-4 md:px-4 lg:pt-14 lg:px-5 " +
+                                        "text-xs md:text-sm lg:text-[15px] xl:text-[16px] " +
                                         "whitespace-nowrap tracking-[0.2em] " +
                                         (isActive ? "text-crimson-red" : "text-midnight-blue")
                                     }>
@@ -122,12 +121,11 @@ export default function DesktopNav({ menuItems, pathname, session, onSignOut, on
                             <li className="list-none md:w-auto text-center mt-4 md:mt-0">
                                 <button
                                     onClick={onLoginClick}
-                                    className="relative inline-block group w-full md:w-auto mx-1"
+                                    className="relative inline-flex items-center justify-center group h-full px-2 md:px-3 lg:px-4 py-3 md:py-4"
                                 >
                                     <span className={
                                         "relative z-10 block uppercase font-sans font-black transition-colors duration-300 group-hover:text-white " +
-                                        "text-xl md:text-sm lg:text-[15px] xl:text-[17px] " +
-                                        "pt-8 pb-3 px-3 md:pt-10 md:pb-4 md:px-4 lg:pt-14 lg:px-5 " +
+                                        "text-xs md:text-sm lg:text-[15px] xl:text-[16px] " +
                                         "whitespace-nowrap tracking-[0.2em] text-midnight-blue"
                                     }>
                                         Ingresar

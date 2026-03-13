@@ -12,6 +12,7 @@ import {
     Calendar,
     LogOut,
     Shield,
+    Tags,
 } from 'lucide-react';
 import { NavItem, UserProfile } from './ui/menu';
 import { canEdit } from '@/lib/auth-utils';
@@ -24,12 +25,15 @@ const menuItems = [
     { label: "Eventos", href: "/events", icon: <Calendar className="h-full w-full" /> },
     { label: "Rankings", href: "/rankings", icon: <Trophy className="h-full w-full" /> },
     { label: "Academias\nAfiliadas", href: "/academies", icon: <School className="h-full w-full" /> },
+    { label: "Categorías", href: "/categories", icon: <Tags className="h-full w-full" /> },
     { label: "Federación", href: "/about", icon: <Info className="h-full w-full" /> },
 ];
 
 export default function Header({ onLoginClick }: { onLoginClick?: () => void }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
     const pathname = usePathname();
     const { data: session } = useSession();
 
@@ -44,6 +48,27 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
             document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
         }
     }, [isMenuOpen, mounted]);
+
+    // Smart scroll hide/show
+    useEffect(() => {
+        const controlNavbar = () => {
+            if (typeof window !== 'undefined') {
+                // If scrolling down and past the header height, hide it
+                if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                    setIsVisible(false);
+                } else if (window.scrollY < lastScrollY) {
+                    // If scrolling up, show it
+                    setIsVisible(true);
+                }
+                setLastScrollY(window.scrollY);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', controlNavbar);
+            return () => window.removeEventListener('scroll', controlNavbar);
+        }
+    }, [lastScrollY]);
 
     const userProfile: UserProfile = {
         name: session?.user?.name || 'Invitado',
@@ -84,9 +109,19 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
         signOut({ callbackUrl: '/' });
     };
 
+    const isHome = pathname === '/';
+
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full z-[100] bg-white/95 backdrop-blur-xl shadow-premium border-b border-silver-accent/50 px-4 md:px-6 xl:px-12 py-4 md:py-8 min-h-[60px] md:min-h-[75px] lg:min-h-[105px] transition-all duration-300">
+            {/* Automatic Dynamic Spacer for Non-Home Pages */}
+            {!isHome && (
+                <div
+                    className="w-full h-20 md:h-24 lg:h-[105px] invisible pointer-events-none shrink-0"
+                    aria-hidden="true"
+                />
+            )}
+
+            <nav className={`fixed top-0 left-0 w-full z-[100] bg-white/95 backdrop-blur-xl shadow-premium border-b border-silver-accent/50 px-4 md:px-6 xl:px-12 h-20 md:h-24 lg:h-[105px] flex items-center transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
                 <DesktopNav
                     menuItems={menuItems}
                     pathname={pathname}

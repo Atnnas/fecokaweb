@@ -7,17 +7,22 @@ import { z } from 'zod';
 
 const EventSchema = z.object({
     name: z.string().min(1, "El nombre es muy corto"),
-    date: z.string(),
+    startDate: z.string(),
+    endDate: z.string(),
     location: z.string().min(1, "La ubicación es muy corta"),
     description: z.string().optional(),
+    poster: z.string().optional().or(z.literal('')),
+    invitationPdf: z.string().optional().or(z.literal('')),
     type: z.enum(['Tournament', 'Seminar', 'Meeting']).default('Tournament'),
+    scope: z.enum(['Nacional', 'Internacional']).default('Nacional'),
     registrationUrl: z.string().optional().or(z.literal('')),
+    externalUrl: z.string().optional().or(z.literal('')),
 });
 
 export async function GET() {
     try {
         await dbConnect();
-        const events = await Event.find({}).sort({ date: 1 });
+        const events = await Event.find({}).sort({ startDate: 1 });
         return NextResponse.json(events);
     } catch (error: any) {
         console.error("GET /api/events error:", error);
@@ -43,7 +48,7 @@ export async function POST(req: Request) {
             console.error("Zod Validation Error (POST Event):", JSON.stringify(error.issues, null, 2));
             return NextResponse.json({ error: 'Validation failed', details: error.issues }, { status: 400 });
         }
-        return NextResponse.json({ error: 'Error creating event' }, { status: 400 });
+        return NextResponse.json({ error: 'Error al crear evento (MongoDB)', details: (error as any).message }, { status: 400 });
     }
 }
 
@@ -70,7 +75,7 @@ export async function PATCH(req: Request) {
             console.error("Zod Validation Error (PATCH Event):", JSON.stringify(error.issues, null, 2));
             return NextResponse.json({ error: 'Validation failed', details: error.issues }, { status: 400 });
         }
-        return NextResponse.json({ error: 'Error updating event' }, { status: 400 });
+        return NextResponse.json({ error: 'Error al actualizar evento (MongoDB)', details: (error as any).message }, { status: 400 });
     }
 }
 

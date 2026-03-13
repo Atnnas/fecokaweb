@@ -11,6 +11,7 @@ const AcademySchema = z.object({
     location: z.string().min(1, "La ubicación es muy corta"),
     contact: z.string().optional(),
     logo: z.string().optional().or(z.literal('')),
+    instructorPhoto: z.string().optional().or(z.literal('')),
     website: z.string().optional().or(z.literal('')),
     status: z.enum(['active', 'inactive']).default('active'),
 });
