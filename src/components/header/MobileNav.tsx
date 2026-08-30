@@ -27,23 +27,23 @@ export default function MobileNav({
 }: MobileNavProps) {
     return (
         <>
-            {/* Mobile Header Bar */}
-            <div className="flex md:hidden items-center justify-between w-full h-full">
+            {/* Mobile / Tablet Header Bar */}
+            <div className="flex xl:hidden items-center justify-between w-full h-full">
                 <button
                     onClick={() => setIsMenuOpen(true)}
-                    className="p-2 -ml-2 text-midnight-blue focus:outline-none focus:ring-2 focus:ring-crimson-red rounded-lg transition-transform active:scale-95 z-20"
+                    className="p-2 -ml-2 text-midnight-blue hover:text-crimson-red focus:outline-none focus:ring-2 focus:ring-crimson-red rounded-xl transition-all active:scale-95 z-20"
                     aria-label="Abrir Menú"
                 >
-                    <Menu className="w-8 h-8" strokeWidth={2.5} />
+                    <Menu className="w-7 h-7" strokeWidth={2.5} />
                 </button>
 
-                {/* Clean Logo Centered on Mobile */}
-                <Link href="/" className="relative block h-10 w-[130px] ml-auto">
+                {/* Clean Official Logo on Mobile / Tablet */}
+                <Link href="/" className="relative block h-10 w-36 ml-auto">
                     <Image
-                        src="/assets/fecoka-logo-blanco-transparente.png"
+                        src="/assets/fecoka-logo.jpg"
                         alt="FECOKA"
                         fill
-                        className="object-contain"
+                        className="object-contain rounded-md"
                         priority
                     />
                 </Link>
@@ -52,11 +52,11 @@ export default function MobileNav({
             {/* Premium Sidebar Overlay */}
             {mounted && (
                 <div
-                    className={`fixed inset-0 z-[110] md:hidden transition-all duration-500 ${isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}
+                    className={`fixed inset-0 z-[110] xl:hidden transition-all duration-500 ${isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}
                 >
                     {/* Backdrop Blur Overlay */}
                     <div
-                        className={`absolute inset-0 bg-midnight-blue/60 backdrop-blur-md transition-opacity duration-500 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+                        className={`absolute inset-0 bg-midnight-blue/70 backdrop-blur-sm transition-opacity duration-500 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}
                         onClick={() => setIsMenuOpen(false)}
                     />
 
@@ -74,10 +74,10 @@ export default function MobileNav({
                         {/* Close Button Inside Sidebar Area */}
                         <button
                             onClick={() => setIsMenuOpen(false)}
-                            className="absolute top-10 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 text-white z-[120] active:scale-90"
+                            className="absolute top-4 right-4 p-2 bg-white/15 hover:bg-white/30 rounded-full transition-all duration-200 text-white z-[130] active:scale-90"
                             aria-label="Cerrar Menú"
                         >
-                            <X className="w-5 h-5" strokeWidth={3} />
+                            <X className="w-5 h-5" strokeWidth={2.5} />
                         </button>
                     </div>
                 </div>

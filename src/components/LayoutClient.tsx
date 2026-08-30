@@ -14,7 +14,7 @@ const LayoutClient = ({ children }: { children: React.ReactNode }) => {
     return (
         <>
             {!isAdmin && <Header onLoginClick={() => setIsLoginOpen(true)} />}
-            <main className={isAdmin ? "" : "min-h-screen relative flex flex-col w-full py-8 lg:py-16"}>
+            <main className={isAdmin ? "" : "min-h-screen relative flex flex-col w-full flex-1"}>
                 {children}
             </main>
             {!isAdmin && <Footer />}

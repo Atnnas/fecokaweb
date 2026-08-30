@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Layers, Activity, Users, FileText } from 'lucide-react';
 
-const PublicCategoriesPage = () => {
+export default function PublicCategoriesPage() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('All'); // 'All', 'Kata', 'Kumite'
@@ -28,153 +28,173 @@ const PublicCategoriesPage = () => {
 
     const filteredCategories = categories.filter((c: any) => filter === 'All' || c.type === filter);
 
-    // Group by type for display
     const kataCategories = filteredCategories.filter((c: any) => c.type === 'Kata');
     const kumiteCategories = filteredCategories.filter((c: any) => c.type === 'Kumite');
 
-    const CategoryCard = ({ category }: { category: any }) => (
-        <motion.div
-            layout
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className={`bg-white border-2 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all ${category.type === 'Kata' ? 'border-indigo-100/50 hover:border-indigo-300' : 'border-red-100/50 hover:border-red-300'}`}
-        >
-            <div className="flex justify-between items-start mb-4">
-                <div className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-1.5 ${category.type === 'Kata' ? 'bg-indigo-50 text-indigo-700' : 'bg-red-50 text-red-700'}`}>
-                    {category.type === 'Kata' ? <Layers className="w-3 h-3" /> : <Activity className="w-3 h-3" />}
-                    {category.type}
-                </div>
-                <div className="px-3 py-1 bg-gray-50 text-gray-500 text-[10px] font-bold uppercase rounded-md border border-gray-100 flex items-center gap-1.5">
-                    <Users className="w-3 h-3" />
-                    {category.gender === 'Male' ? 'Masculino' : category.gender === 'Female' ? 'Femenino' : 'Mixto'}
-                </div>
-            </div>
-
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{category.name}</h3>
-
-            <div className="flex flex-wrap gap-2 mb-4 mt-4">
-                <div className="bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">
-                    <p className="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-0.5">Grupo Edad</p>
-                    <p className="font-bold text-gray-800 text-sm">
-                        {category.ageGroup}
-                        {(category.minAge || category.maxAge) && (
-                            <span className="font-medium text-gray-500 ml-1">
-                                ({category.minAge || '0'} - {category.maxAge || '+'} años)
-                            </span>
-                        )}
-                    </p>
-                </div>
-
-                {category.type === 'Kumite' && category.weightLimit && (
-                    <div className="bg-red-50/50 px-4 py-2 rounded-lg border border-red-100">
-                        <p className="text-[10px] uppercase font-black text-red-400 tracking-widest mb-0.5">Peso Oficial</p>
-                        <p className="font-black text-red-700 text-sm">{category.weightLimit}</p>
+    const CategoryCard = ({ category }: { category: any }) => {
+        const isKata = category.type === 'Kata';
+        return (
+            <motion.div
+                layout
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2 }}
+                className={`bg-white border rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${
+                    isKata
+                        ? 'border-midnight-blue/20 hover:border-midnight-blue/40'
+                        : 'border-crimson-red/20 hover:border-crimson-red/40'
+                }`}
+            >
+                <div>
+                    {/* Header Badges */}
+                    <div className="flex justify-between items-center gap-2 mb-4">
+                        <span
+                            className={`px-3 py-1 text-[11px] font-black uppercase tracking-wider rounded-full flex items-center gap-1.5 ${
+                                isKata
+                                    ? 'bg-midnight-blue/10 text-midnight-blue'
+                                    : 'bg-crimson-red/10 text-crimson-red'
+                            }`}
+                        >
+                            {isKata ? <Layers className="w-3.5 h-3.5" /> : <Activity className="w-3.5 h-3.5" />}
+                            {category.type}
+                        </span>
+                        <span className="px-2.5 py-1 bg-mist-white text-steel-gray text-[10px] font-bold uppercase tracking-wider rounded-md border border-silver-accent flex items-center gap-1">
+                            <Users className="w-3 h-3 text-steel-gray/60" />
+                            {category.gender === 'Male' ? 'Masculino' : category.gender === 'Female' ? 'Femenino' : 'Mixto'}
+                        </span>
                     </div>
-                )}
-            </div>
 
-            {category.description && (
-                <div className="pt-4 border-t border-gray-50">
-                    <div className="flex items-start gap-2 text-sm text-gray-500 font-medium">
-                        <FileText className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
-                        <p className="leading-relaxed">{category.description}</p>
-                    </div>
-                </div>
-            )}
-        </motion.div>
-    );
+                    <h3 className="text-lg sm:text-xl font-bold text-midnight-blue mb-3 leading-snug">
+                        {category.name}
+                    </h3>
 
-    return (
-        <div className="bg-[#f8f9fa] min-h-screen relative overflow-x-hidden w-full font-sans">
-            {/* Minimalist Background Layout */}
-            <div className="absolute top-0 left-0 w-full h-[35vh] bg-white border-b border-gray-100" />
-
-            <div className="w-full max-w-[1920px] mx-auto pt-16 lg:pt-24 pb-20 px-6 sm:px-12 lg:px-24 xl:px-40 relative z-10 block">
-                <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="mb-12 text-center max-w-4xl mx-auto"
-                >
-                    <span className="text-gray-500 font-semibold text-[10px] uppercase tracking-[0.25em] block mb-3">
-                        Reglamento Internacional
-                    </span>
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 tracking-tight leading-tight mb-8">
-                        Categorías <span className="font-semibold text-[#800000]">WKF Oficiales</span>
-                    </h1>
-
-                    <div className="inline-flex bg-white shadow-sm border border-gray-200 rounded-full p-1.5 mx-auto">
-                        {['All', 'Kata', 'Kumite'].map(f => (
-                            <button
-                                key={f}
-                                onClick={() => setFilter(f)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${filter === f
-                                        ? 'bg-midnight-blue text-white shadow-md'
-                                        : 'text-gray-500 hover:text-midnight-blue hover:bg-gray-50'
-                                    }`}
-                            >
-                                {f === 'All' ? 'Todas' : f}
-                            </button>
-                        ))}
-                    </div>
-                </motion.div>
-
-                {loading ? (
-                    <div className="flex justify-center p-20">
-                        <div className="w-12 h-12 border-4 border-crimson-red/20 border-t-crimson-red rounded-full animate-spin"></div>
-                    </div>
-                ) : (
-                    <div className="space-y-16">
-                        {kataCategories.length > 0 && (
-                            <section>
-                                {(filter === 'All' || filter === 'Kata') && (
-                                    <div className="mb-8 flex items-center gap-4">
-                                        <h2 className="text-2xl font-black text-indigo-900 uppercase tracking-tight">KATA</h2>
-                                        <div className="h-[1px] flex-1 bg-indigo-100"></div>
-                                    </div>
+                    {/* Metadata Badges */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="bg-mist-white px-3 py-1.5 rounded-lg border border-silver-accent">
+                            <p className="text-[9px] uppercase font-black text-steel-gray tracking-wider mb-0.5">Grupo Edad</p>
+                            <p className="font-bold text-midnight-blue text-xs sm:text-sm">
+                                {category.ageGroup}
+                                {(category.minAge || category.maxAge) && (
+                                    <span className="font-medium text-steel-gray ml-1">
+                                        ({category.minAge || '0'} - {category.maxAge || '+'} años)
+                                    </span>
                                 )}
-                                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                    <AnimatePresence>
-                                        {kataCategories.map((cat: any) => (
-                                            <CategoryCard key={cat._id} category={cat} />
-                                        ))}
-                                    </AnimatePresence>
-                                </motion.div>
-                            </section>
-                        )}
+                            </p>
+                        </div>
 
-                        {kumiteCategories.length > 0 && (
-                            <section>
-                                {(filter === 'All' || filter === 'Kumite') && (
-                                    <div className="mb-8 flex items-center gap-4">
-                                        <h2 className="text-2xl font-black text-red-900 uppercase tracking-tight">KUMITE</h2>
-                                        <div className="h-[1px] flex-1 bg-red-100"></div>
-                                    </div>
-                                )}
-                                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                    <AnimatePresence>
-                                        {kumiteCategories.map((cat: any) => (
-                                            <CategoryCard key={cat._id} category={cat} />
-                                        ))}
-                                    </AnimatePresence>
-                                </motion.div>
-                            </section>
-                        )}
-
-                        {categories.length === 0 && (
-                            <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                                <Layers className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-                                <h3 className="text-xl font-bold text-gray-400">No hay categorías registradas</h3>
-                                <p className="text-gray-400 text-sm mt-2">Las categorías oficiales se publicarán aquí pronto.</p>
+                        {category.type === 'Kumite' && category.weightLimit && (
+                            <div className="bg-crimson-red/5 px-3 py-1.5 rounded-lg border border-crimson-red/20">
+                                <p className="text-[9px] uppercase font-black text-crimson-red tracking-wider mb-0.5">Peso Oficial</p>
+                                <p className="font-black text-crimson-red text-xs sm:text-sm">{category.weightLimit}</p>
                             </div>
                         )}
                     </div>
+                </div>
+
+                {category.description && (
+                    <div className="pt-3 border-t border-silver-accent/50 mt-2">
+                        <div className="flex items-start gap-2 text-xs text-steel-gray font-medium">
+                            <FileText className="w-3.5 h-3.5 text-steel-gray/60 shrink-0 mt-0.5" />
+                            <p className="leading-relaxed line-clamp-3">{category.description}</p>
+                        </div>
+                    </div>
                 )}
-            </div>
+            </motion.div>
+        );
+    };
+
+    return (
+        <div className="page-container section-padding">
+            {/* Standard Header */}
+            <header className="mb-10 sm:mb-14 text-center max-w-3xl mx-auto animate-fade-up">
+                <span className="text-crimson-red font-black text-xs sm:text-sm uppercase tracking-[0.25em] block mb-3">
+                    Reglamento Internacional WKF
+                </span>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-midnight-blue tracking-tighter uppercase leading-tight mb-4">
+                    Categorías <span className="text-crimson-red">Oficiales</span>
+                </h1>
+                <p className="text-steel-gray text-base sm:text-lg font-medium leading-relaxed mb-8">
+                    Clasificación técnica de divisiones oficiales avaladas para competencias federadas.
+                </p>
+
+                {/* Filter Capsule Control (Fixed overlap, responsive wrap) */}
+                <div className="inline-flex items-center justify-center p-1.5 bg-white border border-silver-accent rounded-full shadow-xs gap-1.5 flex-wrap mx-auto">
+                    {[
+                        { id: 'All', label: 'Todas' },
+                        { id: 'Kata', label: 'Kata' },
+                        { id: 'Kumite', label: 'Kumite' },
+                    ].map((tab) => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setFilter(tab.id)}
+                            className={`px-5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                                filter === tab.id
+                                    ? 'bg-midnight-blue text-white shadow-sm'
+                                    : 'text-steel-gray hover:text-midnight-blue hover:bg-mist-white'
+                            }`}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+            </header>
+
+            {loading ? (
+                <div className="flex justify-center p-16 sm:p-24">
+                    <div className="w-12 h-12 border-4 border-silver-accent border-t-crimson-red rounded-full animate-spin" />
+                </div>
+            ) : (
+                <div className="space-y-12 sm:space-y-16 animate-fade-up">
+                    {kataCategories.length > 0 && (filter === 'All' || filter === 'Kata') && (
+                        <section>
+                            <div className="mb-6 flex items-center gap-3">
+                                <div className="w-3 h-3 rounded-full bg-midnight-blue" />
+                                <h2 className="text-xl sm:text-2xl font-black text-midnight-blue uppercase tracking-tight">KATA</h2>
+                                <span className="text-xs font-bold text-steel-gray bg-mist-white border border-silver-accent px-2.5 py-0.5 rounded-full">
+                                    {kataCategories.length} divisiones
+                                </span>
+                                <div className="h-px flex-1 bg-silver-accent" />
+                            </div>
+                            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                                <AnimatePresence>
+                                    {kataCategories.map((cat: any) => (
+                                        <CategoryCard key={cat._id} category={cat} />
+                                    ))}
+                                </AnimatePresence>
+                            </motion.div>
+                        </section>
+                    )}
+
+                    {kumiteCategories.length > 0 && (filter === 'All' || filter === 'Kumite') && (
+                        <section>
+                            <div className="mb-6 flex items-center gap-3">
+                                <div className="w-3 h-3 rounded-full bg-crimson-red" />
+                                <h2 className="text-xl sm:text-2xl font-black text-midnight-blue uppercase tracking-tight">KUMITE</h2>
+                                <span className="text-xs font-bold text-steel-gray bg-mist-white border border-silver-accent px-2.5 py-0.5 rounded-full">
+                                    {kumiteCategories.length} divisiones
+                                </span>
+                                <div className="h-px flex-1 bg-silver-accent" />
+                            </div>
+                            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                                <AnimatePresence>
+                                    {kumiteCategories.map((cat: any) => (
+                                        <CategoryCard key={cat._id} category={cat} />
+                                    ))}
+                                </AnimatePresence>
+                            </motion.div>
+                        </section>
+                    )}
+
+                    {filteredCategories.length === 0 && (
+                        <div className="text-center py-16 bg-white rounded-3xl border border-silver-accent shadow-xs p-8 max-w-lg mx-auto">
+                            <Layers className="w-12 h-12 text-silver-accent mx-auto mb-3" />
+                            <h3 className="text-lg font-bold text-steel-gray">No hay categorías registradas</h3>
+                            <p className="text-steel-gray/70 text-xs mt-1">Las categorías oficiales se publicarán aquí pronto.</p>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
-};
-
-export default PublicCategoriesPage;
+}

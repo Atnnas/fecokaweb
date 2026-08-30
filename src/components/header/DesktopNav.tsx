@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Shield } from 'lucide-react';
 
 interface MenuItem {
     label: string;
@@ -20,125 +19,97 @@ interface DesktopNavProps {
 
 export default function DesktopNav({ menuItems, pathname, session, onSignOut, onLoginClick }: DesktopNavProps) {
     return (
-        <div className="hidden md:flex items-center justify-between w-full h-full">
-            {/* Left spacer for alignment */}
-            <div className="flex-1 hidden md:block"></div>
+        <div className="hidden xl:flex items-center justify-between w-full max-w-7xl mx-auto h-full gap-4">
+            {/* Official FECOKA Logo */}
+            <div className="flex items-center shrink-0">
+                <Link href="/" className="relative block w-36 h-11 2xl:w-44 2xl:h-12 transition-transform duration-300 hover:scale-105">
+                    <Image
+                        src="/assets/fecoka-logo.jpg"
+                        alt="FECOKA"
+                        fill
+                        className="object-contain rounded-lg"
+                        priority
+                    />
+                </Link>
+            </div>
 
-            {/* Desktop Menu container */}
-            <div className="flex items-center justify-center">
-                <ul className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 lg:gap-8 w-full">
-                    {/* Official FECOKA White Logo */}
-                    <li className="list-none flex items-center justify-center md:mr-2 lg:mr-6">
-                        <Link href="/" className="relative block w-32 h-10 md:w-40 md:h-12 lg:w-48 lg:h-14 transition-transform duration-300 hover:scale-105">
-                            <Image
-                                src="/assets/fecoka-logo-blanco-transparente.png"
-                                alt="FECOKA"
-                                fill
-                                className="object-contain"
-                                priority
-                            />
-                        </Link>
-                    </li>
+            {/* Desktop Menu links */}
+            <nav className="flex items-center justify-center">
+                <ul className="flex items-center gap-1 2xl:gap-2">
                     {menuItems.map((item) => {
                         const isActive = pathname === item.href;
                         return (
-                            <li key={item.label} className="list-none md:w-auto text-center">
+                            <li key={item.label} className="list-none">
                                 <Link
                                     href={item.href}
-                                    className="relative inline-flex items-center justify-center group h-full px-2 md:px-3 lg:px-4 py-3 md:py-4"
+                                    className={`relative inline-flex items-center justify-center px-3 2xl:px-4 py-2 rounded-xl text-xs 2xl:text-[13px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                        isActive
+                                            ? "text-crimson-red bg-crimson-red/5 font-extrabold"
+                                            : "text-midnight-blue hover:text-crimson-red hover:bg-midnight-blue/5"
+                                    }`}
                                 >
-                                    <span className={
-                                        "relative z-10 block uppercase font-sans font-black transition-colors duration-300 group-hover:text-white " +
-                                        "text-xs md:text-sm lg:text-[15px] xl:text-[16px] " +
-                                        "whitespace-nowrap tracking-[0.2em] " +
-                                        (isActive ? "text-crimson-red" : "text-midnight-blue")
-                                    }>
-                                        <span className="whitespace-pre-line leading-none">
-                                            {item.label}
-                                        </span>
-                                    </span>
-                                    <span className="absolute inset-0 border-y-2 border-midnight-blue transform scale-y-[2] opacity-0 transition-all duration-300 origin-center group-hover:scale-y-100 group-hover:opacity-100 rounded-xl" />
-                                    <span className="absolute top-[2px] left-0 w-full h-[calc(100%-4px)] bg-midnight-blue transform scale-0 opacity-0 transition-all duration-300 origin-top group-hover:scale-100 group-hover:opacity-100 rounded-lg" />
+                                    <span className="whitespace-nowrap">{item.label}</span>
+                                    {isActive && (
+                                        <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-crimson-red rounded-full" />
+                                    )}
                                 </Link>
                             </li>
-                        )
+                        );
                     })}
-
-                    {/* Login Action / User Profile */}
-                    {session ? (
-                        <li className="list-none md:w-auto text-center mt-4 md:mt-0 flex items-center justify-center group/profile">
-                            <div className="flex items-center gap-4 md:ml-4">
-                                <div className="flex items-center gap-3" title={session.user?.email || ""}>
-                                    {session.user?.image ? (
-                                        <Image
-                                            src={session.user.image}
-                                            alt={session.user.name || "Usuario"}
-                                            width={40} height={40}
-                                            className="rounded-full border-2 border-transparent group-hover/profile:border-crimson-red transition-colors duration-300 shadow-sm"
-                                        />
-                                    ) : (
-                                        <div className="w-10 h-10 rounded-full bg-midnight-blue flex items-center justify-center text-white font-bold border-2 border-transparent group-hover/profile:border-crimson-red transition-colors duration-300 shadow-sm">
-                                            {session.user?.name?.charAt(0) || "U"}
-                                        </div>
-                                    )}
-                                    <div className="hidden lg:flex flex-col items-start justify-center">
-                                        <span className="font-bold text-midnight-blue text-sm tracking-wide leading-tight">
-                                            {session.user?.name?.split(' ')[0]}
-                                        </span>
-                                        {(session.user?.role === 'admin' || session.user?.role === 'edit') && (
-                                            <Link
-                                                href="/admin"
-                                                className="mt-0.5 text-[9px] font-black uppercase text-white bg-crimson-red hover:bg-midnight-blue px-2 py-[2px] rounded transition-colors tracking-widest shadow-sm flex items-center gap-1"
-                                                title="Panel de Administración"
-                                            >
-                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                                </svg>
-                                                Admin
-                                            </Link>
-                                        )}
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={onSignOut}
-                                    className="relative inline-block group/btn w-full md:w-auto mx-1"
-                                >
-                                    <span className={
-                                        "relative z-10 block uppercase font-sans font-black transition-colors duration-300 group-hover/btn:text-white " +
-                                        "text-sm md:text-sm lg:text-[14px] " +
-                                        "py-2 px-4 md:py-2 md:px-4 " +
-                                        "whitespace-nowrap tracking-[0.1em] text-crimson-red"
-                                    }>
-                                        Salir
-                                    </span>
-                                    <span className="absolute inset-0 border-y-2 border-crimson-red transform scale-y-[2] opacity-0 transition-all duration-300 origin-center group-hover/btn:scale-y-100 group-hover/btn:opacity-100 rounded-xl" />
-                                    <span className="absolute top-[2px] left-0 w-full h-[calc(100%-4px)] bg-crimson-red transform scale-0 opacity-0 transition-all duration-300 origin-top group-hover/btn:scale-100 group-hover/btn:opacity-100 rounded-lg" />
-                                </button>
-                            </div>
-                        </li>
-                    ) : (
-                        onLoginClick && (
-                            <li className="list-none md:w-auto text-center mt-4 md:mt-0">
-                                <button
-                                    onClick={onLoginClick}
-                                    className="relative inline-flex items-center justify-center group h-full px-2 md:px-3 lg:px-4 py-3 md:py-4"
-                                >
-                                    <span className={
-                                        "relative z-10 block uppercase font-sans font-black transition-colors duration-300 group-hover:text-white " +
-                                        "text-xs md:text-sm lg:text-[15px] xl:text-[16px] " +
-                                        "whitespace-nowrap tracking-[0.2em] text-midnight-blue"
-                                    }>
-                                        Ingresar
-                                    </span>
-                                    <span className="absolute inset-0 border-y-2 border-midnight-blue transform scale-y-[2] opacity-0 transition-all duration-300 origin-center group-hover:scale-y-100 group-hover:opacity-100 rounded-xl" />
-                                    <span className="absolute top-[2px] left-0 w-full h-[calc(100%-4px)] bg-midnight-blue transform scale-0 opacity-0 transition-all duration-300 origin-top group-hover:scale-100 group-hover:opacity-100 rounded-lg" />
-                                </button>
-                            </li>
-                        )
-                    )}
                 </ul>
+            </nav>
+
+            {/* Right side: Login Action / User Profile */}
+            <div className="flex items-center shrink-0 gap-3">
+                {session ? (
+                    <div className="flex items-center gap-3 group/profile">
+                        <div className="flex items-center gap-2.5" title={session.user?.email || ""}>
+                            {session.user?.image ? (
+                                <Image
+                                    src={session.user.image}
+                                    alt={session.user.name || "Usuario"}
+                                    width={36}
+                                    height={36}
+                                    className="rounded-full border-2 border-crimson-red shadow-sm"
+                                />
+                            ) : (
+                                <div className="w-9 h-9 rounded-full bg-midnight-blue flex items-center justify-center text-white font-bold text-sm border-2 border-crimson-red shadow-sm">
+                                    {session.user?.name?.charAt(0) || "U"}
+                                </div>
+                            )}
+                            <div className="flex flex-col items-start justify-center">
+                                <span className="font-bold text-midnight-blue text-xs tracking-wide leading-tight">
+                                    {session.user?.name?.split(' ')[0]}
+                                </span>
+                                {(session.user?.role === 'admin' || session.user?.role === 'edit') && (
+                                    <Link
+                                        href="/admin"
+                                        className="mt-0.5 text-[9px] font-black uppercase text-white bg-crimson-red hover:bg-midnight-blue px-1.5 py-[1px] rounded transition-colors tracking-wider shadow-sm flex items-center gap-1"
+                                        title="Panel de Administración"
+                                    >
+                                        Admin
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                        <button
+                            onClick={onSignOut}
+                            className="px-3 py-1.5 text-xs font-black uppercase tracking-wider text-crimson-red border border-crimson-red/30 rounded-lg hover:bg-crimson-red hover:text-white transition-all duration-200"
+                        >
+                            Salir
+                        </button>
+                    </div>
+                ) : (
+                    onLoginClick && (
+                        <button
+                            onClick={onLoginClick}
+                            className="px-5 py-2 text-xs font-black uppercase tracking-wider text-white bg-midnight-blue hover:bg-crimson-red rounded-full transition-all duration-300 shadow-sm hover:shadow-md active:scale-95"
+                        >
+                            Ingresar
+                        </button>
+                    )
+                )}
             </div>
-            <div className="flex-1 hidden md:block"></div>
         </div>
     );
 }

@@ -99,7 +99,7 @@ export default function Home() {
         <div className="max-w-screen-xl mx-auto px-6 mb-16 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-center md:text-left">
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white/90 mb-3 italic">Partners</h2>
-            <div className="w-16 h-1 bg-crimson mx-auto md:mx-0 shadow-[0_0_15px_rgba(217,4,41,0.5)]" />
+            <div className="w-16 h-1 bg-crimson-red mx-auto md:mx-0 shadow-[0_0_15px_rgba(217,4,41,0.5)]" />
           </div>
           <p className="max-w-sm text-[11px] font-bold text-white/30 uppercase tracking-[0.3em] text-center md:text-right leading-relaxed">
             Impulsando el karate costarricense hacia el escenario mundial.
