@@ -2,18 +2,75 @@
 
 import React, { useState, useEffect } from 'react';
 import { DataTable } from '@/components/ui/basic-data-table';
+import { FileSpreadsheet, RotateCcw } from 'lucide-react';
+import { ImportRankingsModal } from '@/components/admin/ImportRankingsModal';
 
 const AdminRankingsPage = () => {
     const [rankings, setRankings] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isImportModalOpen, setIsImportModalOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<any>(null);
     const [formData, setFormData] = useState({ athleteName: '', category: '', modality: 'Kata', points: 0, position: 1, academy: '' });
     const [loading, setLoading] = useState(false);
     const [fetchLoading, setFetchLoading] = useState(true);
 
+    // Estado del Rollback
+    const [rollbackInfo, setRollbackInfo] = useState<{
+        hasBackup: boolean;
+        backup?: {
+            id: string;
+            createdAt: string;
+            itemsCount: number;
+            description: string;
+            importedTournament?: string;
+        };
+    } | null>(null);
+    const [rollbackLoading, setRollbackLoading] = useState(false);
+
     useEffect(() => {
         fetchRankings();
+        checkRollbackStatus();
     }, []);
+
+    const checkRollbackStatus = async () => {
+        try {
+            const res = await fetch('/api/rankings/rollback');
+            if (res.ok) {
+                const data = await res.json();
+                setRollbackInfo(data);
+            }
+        } catch (error) {
+            console.error("Error al consultar estado de rollback:", error);
+        }
+    };
+
+    const handleRollback = async () => {
+        if (!rollbackInfo?.backup) return;
+        const dateStr = new Date(rollbackInfo.backup.createdAt).toLocaleString('es-CR');
+        const confirmMsg = `¿Deseas revertir los rankings al estado previo del ${dateStr} (${rollbackInfo.backup.itemsCount} atletas guardados)?\n\nEsta acción restaurará el listado que estaba publicado antes de la última importación.`;
+        if (!confirm(confirmMsg)) return;
+
+        setRollbackLoading(true);
+        try {
+            const res = await fetch('/api/rankings/rollback', {
+                method: 'POST',
+            });
+            if (res.ok) {
+                const result = await res.json();
+                alert(result.message || 'Ranking restaurado exitosamente.');
+                fetchRankings();
+                checkRollbackStatus();
+            } else {
+                const err = await res.json();
+                alert(err.error || 'Error al ejecutar rollback.');
+            }
+        } catch (error) {
+            console.error("Rollback error:", error);
+            alert('Error al conectar con el servidor para restaurar el ranking.');
+        } finally {
+            setRollbackLoading(false);
+        }
+    };
 
     const fetchRankings = async () => {
         setFetchLoading(true);
@@ -105,15 +162,42 @@ const AdminRankingsPage = () => {
                         </h1>
                         <p className="text-steel-gray font-medium">Actualiza las posiciones oficiales y puntajes del Karate-Do costarricense.</p>
                     </div>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="bg-midnight-blue hover:bg-crimson-red text-white px-8 py-4 font-bold transition-all duration-300 flex items-center gap-3 shadow-xl shadow-midnight-blue/10 hover:shadow-crimson-red/20 group"
-                    >
-                        <div className="w-8 h-8 bg-white/10 flex items-center justify-center group-hover:rotate-90 transition-transform">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
-                        </div>
-                        Agregar Atleta
-                    </button>
+                    <div className="flex flex-wrap items-center gap-3">
+                        {rollbackInfo?.hasBackup && (
+                            <button
+                                onClick={handleRollback}
+                                disabled={rollbackLoading}
+                                title={`Restaurar el ranking anterior al estado del ${new Date(rollbackInfo.backup!.createdAt).toLocaleString('es-CR')}`}
+                                className="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 px-5 py-3.5 font-bold transition-all duration-300 flex items-center gap-2.5 shadow-sm hover:shadow-md cursor-pointer group"
+                            >
+                                <RotateCcw className={`w-4 h-4 text-amber-700 ${rollbackLoading ? 'animate-spin' : 'group-hover:-rotate-90 transition-transform'}`} />
+                                <div className="text-left">
+                                    <span className="block text-xs font-black uppercase tracking-wider leading-none">Revertir Ranking</span>
+                                    <span className="text-[9px] text-amber-700/80 font-bold block leading-tight mt-0.5">
+                                        Estado anterior ({rollbackInfo.backup?.itemsCount || 0} atletas)
+                                    </span>
+                                </div>
+                            </button>
+                        )}
+                        <button
+                            onClick={() => setIsImportModalOpen(true)}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 font-bold transition-all duration-300 flex items-center gap-3 shadow-xl shadow-emerald-900/10 hover:shadow-emerald-900/20 group cursor-pointer"
+                        >
+                            <div className="w-8 h-8 bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <FileSpreadsheet className="w-5 h-5 text-white" />
+                            </div>
+                            Importar Ranking
+                        </button>
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="bg-midnight-blue hover:bg-crimson-red text-white px-6 py-4 font-bold transition-all duration-300 flex items-center gap-3 shadow-xl shadow-midnight-blue/10 hover:shadow-crimson-red/20 group cursor-pointer"
+                        >
+                            <div className="w-8 h-8 bg-white/10 flex items-center justify-center group-hover:rotate-90 transition-transform">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 4v16m8-8H4" /></svg>
+                            </div>
+                            Agregar Atleta
+                        </button>
+                    </div>
                 </div>
 
                 <div className="bg-white shadow-premium border border-white/80 p-8 lg:p-12">
@@ -143,7 +227,19 @@ const AdminRankingsPage = () => {
                                         <div className="w-1.5 h-10 bg-midnight-blue opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
                                         <div>
                                             <p className="font-bold text-midnight-blue group-hover:text-crimson-red transition-colors capitalize">{item.athleteName}</p>
-                                            <p className="text-[10px] font-black uppercase text-steel-gray/50 tracking-widest">{item.academy || 'Sin Academia'}</p>
+                                            <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                                                <p className="text-[10px] font-black uppercase text-steel-gray/50 tracking-widest">{item.academy || 'Sin Academia'}</p>
+                                                {item.tournament && (
+                                                    <span className="text-[9px] font-black text-midnight-blue/80 bg-mist-white border border-silver-accent/30 px-2 py-0.5 rounded-full" title={item.tournament}>
+                                                        🏆 {item.tournament.length > 25 ? item.tournament.substring(0, 25) + '...' : item.tournament}
+                                                    </span>
+                                                )}
+                                                {item.history && item.history.length > 1 && (
+                                                    <span className="text-[9px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full" title={`${item.history.length} torneos registrados en historial`}>
+                                                        📊 {item.history.length} torneos
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 )
@@ -319,6 +415,16 @@ const AdminRankingsPage = () => {
                     </div>
                 </div>
             )}
+
+            {/* Modal Importar Rankings desde Excel */}
+            <ImportRankingsModal
+                isOpen={isImportModalOpen}
+                onClose={() => setIsImportModalOpen(false)}
+                onSuccess={() => {
+                    fetchRankings();
+                    checkRollbackStatus();
+                }}
+            />
         </>
     );
 };
