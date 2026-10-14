@@ -1,9 +1,10 @@
 // 1. Import Dependencies
 import * as React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, LogOut } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // 2. Define Prop Types
 export interface NavItem {
@@ -91,9 +92,12 @@ export const UserProfileSidebar = React.forwardRef<HTMLDivElement, UserProfileSi
                     <motion.div variants={itemVariants} className="flex items-center space-x-3 relative z-10">
                         {user.avatarUrl ? (
                             <img
-                                src={user.avatarUrl}
+                                src={user.avatarUrl.replace(/=s\d+(-c)?/i, "=s256-c")}
                                 alt={`${user.name}'s avatar`}
+                                width={44}
+                                height={44}
                                 className="h-11 w-11 rounded-full object-cover border-2 border-crimson-red shadow-md"
+                                referrerPolicy="no-referrer"
                             />
                         ) : (
                             <div className="h-11 w-11 rounded-full bg-crimson-red flex items-center justify-center text-white font-bold text-lg font-outfit shadow-md">

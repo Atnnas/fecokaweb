@@ -66,7 +66,7 @@ export default function PublicEventsPage() {
                 <div className="flex gap-4 items-center w-full sm:w-auto flex-1 min-w-0">
                     {/* Minimalist Date Card */}
                     <div className="flex flex-col border border-silver-accent rounded-xl overflow-hidden shrink-0 shadow-xs w-16 sm:w-18 bg-white group-hover:border-midnight-blue/40 transition-colors">
-                        <div className="bg-mist-white text-steel-gray text-[9px] font-black uppercase text-center py-1 border-b border-silver-accent">
+                        <div className="bg-mist-white text-steel-gray text-[10px] font-black uppercase text-center py-1 border-b border-silver-accent">
                             {startObj.toLocaleDateString('es-CR', { timeZone: 'UTC', month: 'short' }).replace('.', '')}
                             {!sameMonth && ` - ${endObj.toLocaleDateString('es-CR', { timeZone: 'UTC', month: 'short' }).replace('.', '')}`}
                         </div>
@@ -79,14 +79,14 @@ export default function PublicEventsPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-2">
-                            <span className={`inline-block whitespace-nowrap px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-md ${
+                            <span className={`inline-block whitespace-nowrap px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider rounded-md ${
                                 event.scope === 'Internacional'
                                     ? 'bg-midnight-blue text-white'
                                     : 'bg-mist-white text-midnight-blue border border-silver-accent'
                             }`}>
                                 {event.scope || 'Nacional'}
                             </span>
-                            <span className="inline-block whitespace-nowrap px-2.5 py-0.5 text-[9px] font-bold text-steel-gray bg-mist-white border border-silver-accent rounded-md">
+                            <span className="inline-block whitespace-nowrap px-2.5 py-0.5 text-[10px] font-bold text-steel-gray bg-mist-white border border-silver-accent rounded-md">
                                 {getTypeLabel(event.type)}
                             </span>
                         </div>
@@ -126,6 +126,46 @@ export default function PublicEventsPage() {
 
     return (
         <div className="page-container section-padding">
+            {/* Structured Data for SEO / Google Events */}
+            {events.length > 0 && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "ItemList",
+                            "name": "Calendario Oficial de Eventos FECOKA",
+                            "itemListElement": events.map((event: any, idx: number) => ({
+                                "@type": "ListItem",
+                                "position": idx + 1,
+                                "item": {
+                                    "@type": "SportsEvent",
+                                    "name": event.name,
+                                    "startDate": event.startDate,
+                                    "endDate": event.endDate,
+                                    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                                    "eventStatus": "https://schema.org/EventScheduled",
+                                    "location": {
+                                        "@type": "Place",
+                                        "name": event.location,
+                                        "address": {
+                                            "@type": "PostalAddress",
+                                            "addressCountry": "CR"
+                                        }
+                                    },
+                                    "organizer": {
+                                        "@type": "SportsOrganization",
+                                        "name": "Federación Costarricense de Karate",
+                                        "url": "https://fecoka.org"
+                                    },
+                                    "description": event.description || `Evento oficial FECOKA: ${event.name}`
+                                }
+                            }))
+                        })
+                    }}
+                />
+            )}
+
             {/* Header */}
             <header className="mb-12 sm:mb-16 animate-fade-up">
                 <span className="text-crimson-red font-black text-xs sm:text-sm uppercase tracking-[0.25em] block mb-3">

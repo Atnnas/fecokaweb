@@ -11,6 +11,10 @@ const NewsSchema = new Schema({
     author: { type: String },
 }, { timestamps: true });
 
+// Compound indexes for optimal queries & sorting
+NewsSchema.index({ publishedAt: -1, startDate: 1 });
+NewsSchema.index({ category: 1, publishedAt: -1 });
+
 const News = models.News || model('News', NewsSchema);
 
 export default News;

@@ -40,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
     }))
 
-    const academyRoutes = academies.map((item) => ({
+    const academyRoutes = academies.map((_item) => ({
         url: `${baseUrl}/academies`, // Currently a single list page, but prepared for future detail pages
         lastModified: new Date(),
         changeFrequency: 'monthly' as const,

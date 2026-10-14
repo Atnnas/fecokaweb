@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Newspaper, ArrowRight } from 'lucide-react';
 
 export default function PublicNewsPage() {
@@ -44,13 +45,13 @@ export default function PublicNewsPage() {
             </header>
 
             {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {[1, 2, 3].map((i) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
+                    {[1, 2, 3, 4].map((i) => (
                         <div key={i} className="bg-white rounded-2xl sm:rounded-3xl h-96 border border-silver-accent animate-pulse shadow-sm" />
                     ))}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
                     {news.length > 0 ? (
                         news.map((item: any, idx) => (
                             <article
@@ -62,10 +63,13 @@ export default function PublicNewsPage() {
                                     {/* Image */}
                                     <div className="relative h-52 sm:h-56 rounded-xl sm:rounded-2xl bg-silver-accent overflow-hidden mb-5">
                                         {item.images && item.images.length > 0 ? (
-                                            <img
+                                            <Image
                                                 src={item.images[0]}
                                                 alt={item.title}
+                                                fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                                unoptimized
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-midnight-blue/20 font-black text-2xl italic bg-mist-white">

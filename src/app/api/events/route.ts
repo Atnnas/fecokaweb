@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Event from '@/models/Event';
 import { auth } from '@/auth';
+import { canEdit } from '@/lib/auth-utils';
 
 import { z } from 'zod';
 
@@ -22,8 +23,12 @@ const EventSchema = z.object({
 export async function GET() {
     try {
         await dbConnect();
-        const events = await Event.find({}).sort({ startDate: 1 });
-        return NextResponse.json(events);
+        const events = await Event.find({}).sort({ startDate: 1 }).lean();
+        return NextResponse.json(events, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            },
+        });
     } catch (error: any) {
         console.error("GET /api/events error:", error);
         return NextResponse.json({ error: 'Error fetching events', details: error.message }, { status: 500 });
@@ -33,7 +38,7 @@ export async function GET() {
 export async function POST(req: Request) {
     const session = await auth();
 
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized: Insufficient permissions' }, { status: 403 });
     }
 
@@ -55,7 +60,7 @@ export async function POST(req: Request) {
 // PATCH update event (Admin/Edit only)
 export async function PATCH(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -82,7 +87,7 @@ export async function PATCH(req: Request) {
 // DELETE event (Admin/Edit only)
 export async function DELETE(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

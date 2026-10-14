@@ -12,6 +12,8 @@ const AcademySchema = new Schema({
     createdAt: { type: Date, default: Date.now },
 });
 
+AcademySchema.index({ isActive: 1, name: 1 });
+
 const Academy = models.Academy || model('Academy', AcademySchema);
 
 export default Academy;

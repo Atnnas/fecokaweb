@@ -3,17 +3,14 @@ import dbConnect from '@/lib/db';
 import Sponsor from '@/models/Sponsor';
 import { auth } from '@/auth';
 
-export async function GET() {
-    // Temporary bypass for automation
-    if (false) {
-        const session = await auth();
-        const user = session?.user as any;
-        const isSuperAdmin = user?.email?.toLowerCase() === 'david.artavia.rodriguez@gmail.com';
+export async function POST() {
+    const session = await auth();
+    const user = session?.user as any;
+    const isSuperAdmin = user?.email?.toLowerCase() === 'david.artavia.rodriguez@gmail.com';
 
-        // Basic security: only super admin can trigger this
-        if (!isSuperAdmin) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
-        }
+    // Strict security: only super admin can trigger database seeding
+    if (!session || !isSuperAdmin) {
+        return NextResponse.json({ error: 'Unauthorized: Super admin required' }, { status: 403 });
     }
 
     const sponsors = [

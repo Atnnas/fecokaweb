@@ -3,11 +3,12 @@ import dbConnect from '@/lib/db';
 import Ranking from '@/models/Ranking';
 import RankingBackup from '@/models/RankingBackup';
 import { auth } from '@/auth';
+import { canEdit } from '@/lib/auth-utils';
 
 // GET: Consultar si existe un respaldo para rollback
 export async function GET() {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     }
 
@@ -38,7 +39,7 @@ export async function GET() {
 // POST: Ejecutar rollback al último respaldo
 export async function POST() {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'No autorizado: permisos insuficientes' }, { status: 403 });
     }
 

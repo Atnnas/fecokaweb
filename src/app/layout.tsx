@@ -4,6 +4,7 @@ import { Inter, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import LayoutClient from "@/components/LayoutClient";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { auth } from "@/auth";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -11,7 +12,6 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
 };
 
 export const metadata: Metadata = {
@@ -70,16 +70,59 @@ export const metadata: Metadata = {
   },
 };
 
-const { auth } = require("@/auth");
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  let session = null;
+  try {
+    session = await auth();
+  } catch (_error) {
+    console.warn("[Auth] No se pudo desencriptar la sesión actual (posible cookie previa o clave desincronizada). Continuando en modo visitante.");
+  }
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SportsOrganization",
+    "name": "Federación Costarricense de Karate",
+    "alternateName": "FECOKA",
+    "url": "https://fecoka.org",
+    "logo": "https://fecoka.org/assets/fecoka-logo.jpg",
+    "description": "Entidad rectora del Karate-Do en Costa Rica. Fomento, regulación y desarrollo de atletas y torneos nacionales e internacionales.",
+    "sport": "Karate",
+    "parentOrganization": [
+      {
+        "@type": "SportsOrganization",
+        "name": "World Karate Federation",
+        "alternateName": "WKF",
+        "url": "https://www.wkf.net"
+      },
+      {
+        "@type": "SportsOrganization",
+        "name": "Comité Olímpico Nacional de Costa Rica",
+        "alternateName": "CON",
+        "url": "https://concrc.org"
+      }
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San José",
+      "addressCountry": "CR"
+    },
+    "sameAs": [
+      "https://www.wkf.net"
+    ]
+  };
+
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body suppressHydrationWarning className={`${inter.variable} ${outfit.variable} font-sans antialiased text-deep-black bg-mist-white`}>
         <Providers session={session}>
           <ErrorBoundary>

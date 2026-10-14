@@ -41,13 +41,13 @@ export default function AcademiesPublicPage() {
             </header>
 
             {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                         <div key={i} className="bg-white rounded-2xl sm:rounded-3xl h-64 border border-silver-accent animate-pulse shadow-sm p-6" />
                     ))}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 animate-fade-up">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8 animate-fade-up">
                     {academies.map((academy: any) => (
                         <div
                             key={academy._id}

@@ -11,6 +11,8 @@ const SponsorSchema = new Schema({
     contractEnd: { type: Date },
 }, { timestamps: true });
 
+SponsorSchema.index({ isActive: 1, order: 1 });
+
 const Sponsor = models.Sponsor || model('Sponsor', SponsorSchema);
 
 export default Sponsor;

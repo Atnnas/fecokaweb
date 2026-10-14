@@ -17,9 +17,26 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
-      "fecoka-web-init/**"
+      "fecoka-web-init/**",
+      "scripts/**",
+      ".agents/**",
+      "node_modules/**"
     ],
   },
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "caughtErrorsIgnorePattern": "^_"
+        }
+      ],
+      "@next/next/no-img-element": "warn"
+    }
+  }
 ];
 
 export default eslintConfig;

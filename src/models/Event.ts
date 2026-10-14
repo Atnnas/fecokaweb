@@ -14,6 +14,10 @@ const EventSchema = new Schema({
     scope: { type: String, enum: ['Nacional', 'Internacional'], default: 'Nacional' },
 });
 
+// Compound indexes for event filtering and chronological ordering
+EventSchema.index({ startDate: 1, type: 1 });
+EventSchema.index({ scope: 1, startDate: 1 });
+
 if (models.Event) {
     delete models.Event;
 }

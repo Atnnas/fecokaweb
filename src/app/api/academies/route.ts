@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Academy from '@/models/Academy';
 import { auth } from '@/auth';
+import { canEdit } from '@/lib/auth-utils';
 
 import { z } from 'zod';
 
@@ -19,8 +20,12 @@ const AcademySchema = z.object({
 export async function GET() {
     await dbConnect();
     try {
-        const academies = await Academy.find({}).sort({ name: 1 });
-        return NextResponse.json(academies);
+        const academies = await Academy.find({}).sort({ name: 1 }).lean();
+        return NextResponse.json(academies, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            },
+        });
     } catch (error) {
         return NextResponse.json({ error: 'Error fetching academies' }, { status: 500 });
     }
@@ -28,7 +33,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -49,7 +54,7 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -75,7 +80,7 @@ export async function PATCH(req: Request) {
 
 export async function DELETE(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

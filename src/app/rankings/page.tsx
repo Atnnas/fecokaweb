@@ -8,11 +8,7 @@ import {
     Medal,
     Search,
     ChevronDown,
-    Flame,
-    Sparkles,
-    Shield,
-    Users,
-    ArrowUpRight
+    Flame
 } from 'lucide-react';
 
 interface AthleteRanking {
@@ -113,7 +109,7 @@ export default function PublicRankingsPage() {
             }
         });
         return Array.from(set).sort();
-    }, [rankings, selectedDivision, selectedModality, selectedGender]);
+    }, [individualRankings, selectedDivision, selectedModality, selectedGender]);
 
     // Cuando cambian las categorías disponibles, asegurar que selectedCategory sea válida
     useEffect(() => {
@@ -286,7 +282,7 @@ export default function PublicRankingsPage() {
 
                     {/* COMBOBOX: Selector Dinámico de Categoría / Peso */}
                     <div className="md:col-span-5 relative">
-                        <label className="block text-[9px] font-black text-midnight-blue uppercase tracking-widest mb-1 ml-1">
+                        <label className="block text-[11px] font-black text-midnight-blue uppercase tracking-widest mb-1.5 ml-1">
                             Categoría y División de Peso ({availableCategories.length})
                         </label>
                         <div className="relative">
@@ -308,7 +304,7 @@ export default function PublicRankingsPage() {
 
                     {/* Buscador de Atleta */}
                     <div className="md:col-span-4 relative self-end">
-                        <label className="block text-[9px] font-black text-midnight-blue uppercase tracking-widest mb-1 ml-1">
+                        <label className="block text-[11px] font-black text-midnight-blue uppercase tracking-widest mb-1.5 ml-1">
                             Búsqueda Directa
                         </label>
                         <div className="relative">
@@ -628,9 +624,9 @@ export default function PublicRankingsPage() {
                                     </td>
                                     <td className="px-6 py-4 font-bold text-steel-gray text-xs">
                                         <div>
-                                            <span>{athlete.academy || athlete.dojo || 'Selección FECOKA'}</span>
+                                            <span className="text-midnight-blue font-bold text-sm block">{athlete.academy || athlete.dojo || 'Selección FECOKA'}</span>
                                             {athlete.tournament && (
-                                                <span className="block text-[10px] text-midnight-blue/70 font-semibold truncate max-w-xs mt-0.5">
+                                                <span className="block text-[11px] text-steel-gray/80 font-medium mt-0.5">
                                                     🏆 {athlete.tournament}
                                                 </span>
                                             )}

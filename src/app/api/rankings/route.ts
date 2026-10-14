@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Ranking from '@/models/Ranking';
 import { auth } from '@/auth';
+import { canEdit } from '@/lib/auth-utils';
 
 import { z } from 'zod';
 
@@ -17,8 +18,12 @@ const RankingSchema = z.object({
 export async function GET() {
     try {
         await dbConnect();
-        const rankings = await Ranking.find({}).sort({ position: 1 });
-        return NextResponse.json(rankings);
+        const rankings = await Ranking.find({}).sort({ position: 1 }).lean();
+        return NextResponse.json(rankings, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            },
+        });
     } catch (error: any) {
         console.error("GET /api/rankings error:", error);
         return NextResponse.json({ error: 'Error fetching rankings', details: error.message }, { status: 500 });
@@ -28,7 +33,7 @@ export async function GET() {
 export async function POST(req: Request) {
     const session = await auth();
 
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized: Insufficient permissions' }, { status: 403 });
     }
 
@@ -60,7 +65,7 @@ export async function POST(req: Request) {
 // PATCH update ranking (Admin/Edit only)
 export async function PATCH(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -87,7 +92,7 @@ export async function PATCH(req: Request) {
 // DELETE ranking (Admin/Edit only)
 export async function DELETE(req: Request) {
     const session = await auth();
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

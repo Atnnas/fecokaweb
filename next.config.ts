@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -34,16 +35,23 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'infobae.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.public.blob.vercel-storage.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.blob.vercel-storage.com',
       }
     ],
   },
+  poweredByHeader: false,
+  compress: true,
   experimental: {
     turbo: {
       root: 'C:/Dev/fecoka-web',
     },
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   async headers() {
     return [
@@ -69,6 +77,10 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
         ],
       },

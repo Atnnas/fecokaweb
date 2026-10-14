@@ -63,39 +63,55 @@ export default function AboutPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     {[
-                        { role: 'Presidente', name: 'Nombre Apellido' },
-                        { role: 'Vicepresidente', name: 'Nombre Apellido' },
-                        { role: 'Secretaría', name: 'Nombre Apellido' },
-                        { role: 'Tesorería', name: 'Nombre Apellido' }
+                        { role: 'Presidente', name: 'Presidencia Federada' },
+                        { role: 'Vicepresidente', name: 'Comisión Técnica Nacional' },
+                        { role: 'Secretaría General', name: 'Gestión Administrativa' },
+                        { role: 'Tesorería', name: 'Dirección Financiera' }
                     ].map((persona) => (
                         <div
                             key={persona.role}
-                            className="text-center group bg-mist-white/60 p-5 rounded-2xl border border-silver-accent/70 hover:border-crimson-red/40 hover:bg-white transition-all duration-300 shadow-xs"
+                            className="text-center group bg-mist-white/60 p-6 rounded-2xl border border-silver-accent/70 hover:border-crimson-red/40 hover:bg-white transition-all duration-300 shadow-xs"
                         >
-                            <div className="w-24 h-24 sm:w-28 sm:h-28 bg-silver-accent/80 rounded-2xl mx-auto mb-4 overflow-hidden relative flex items-center justify-center group-hover:bg-midnight-blue/5 transition-colors">
-                                <svg className="w-12 h-12 text-midnight-blue/20" fill="currentColor" viewBox="0 0 20 20">
+                            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-midnight-blue/5 rounded-2xl mx-auto mb-4 overflow-hidden relative flex items-center justify-center group-hover:bg-midnight-blue/10 transition-colors">
+                                <svg className="w-10 h-10 text-midnight-blue/40" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                                 </svg>
                             </div>
-                            <p className="text-crimson-red text-[10px] font-black uppercase tracking-[0.2em] mb-1">{persona.role}</p>
-                            <p className="text-base sm:text-lg font-bold text-midnight-blue group-hover:text-crimson-red transition-colors">{persona.name}</p>
+                            <p className="text-crimson-red text-xs font-black uppercase tracking-[0.2em] mb-1">{persona.role}</p>
+                            <p className="text-base font-bold text-midnight-blue group-hover:text-crimson-red transition-colors">{persona.name}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Dojo Kun Section - Self-contained Relative Container */}
-            <div className="relative mt-10 sm:mt-14 bg-white rounded-2xl sm:rounded-3xl border border-silver-accent p-8 sm:p-14 text-center overflow-hidden shadow-sm animate-fade-up">
+            {/* Dojo Kun Section - 5 Authentic Martial Precepts */}
+            <div className="relative mt-10 sm:mt-14 bg-white rounded-2xl sm:rounded-3xl border border-silver-accent p-8 sm:p-14 overflow-hidden shadow-sm animate-fade-up">
                 {/* Contained Watermark */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none text-midnight-blue/[0.03] font-black text-6xl sm:text-8xl lg:text-9xl tracking-tighter">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none text-midnight-blue/[0.02] font-black text-6xl sm:text-8xl lg:text-9xl tracking-tighter">
                     DOJO KUN
                 </div>
 
-                <div className="max-w-2xl mx-auto relative z-10">
-                    <span className="text-crimson-red font-black text-xs uppercase tracking-[0.25em] block mb-4">Filosofía Marcial</span>
-                    <p className="text-xl sm:text-2xl md:text-3xl font-black text-midnight-blue tracking-tight leading-relaxed">
-                        "En el Karate no hay un primer ataque. <br className="hidden sm:inline" /> Solo la búsqueda constante de la <span className="text-crimson-red">perfección del carácter</span>."
-                    </p>
+                <div className="max-w-3xl mx-auto relative z-10 text-center">
+                    <span className="text-crimson-red font-black text-xs uppercase tracking-[0.25em] block mb-3">Filosofía & Tradición Marcial</span>
+                    <h2 className="text-2xl sm:text-4xl font-black text-midnight-blue uppercase tracking-tight mb-8">
+                        Los 5 Preceptos del <span className="text-crimson-red">Dojo Kun</span>
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-left">
+                        {[
+                            { num: '一', precept: 'Perfeccionar el carácter', sub: 'Jinkaku kansei' },
+                            { num: '一', precept: 'Ser leal y sincero', sub: 'Makoto no michi' },
+                            { num: '一', precept: 'Esforzarse con dedicación', sub: 'Doryoku no seishin' },
+                            { num: '一', precept: 'Respetar a los demás', sub: 'Reigi o omonzuru' },
+                            { num: '一', precept: 'Controlar el temperamento', sub: 'Kekki no yū' },
+                        ].map((item, idx) => (
+                            <div key={idx} className="bg-mist-white p-4 rounded-xl border border-silver-accent/70 hover:border-midnight-blue transition-colors">
+                                <span className="text-crimson-red font-black text-lg block mb-1">{item.num}</span>
+                                <p className="font-black text-midnight-blue text-xs uppercase tracking-wide leading-snug mb-1">{item.precept}</p>
+                                <p className="text-steel-gray text-[10px] italic">{item.sub}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

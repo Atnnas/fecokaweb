@@ -7,7 +7,20 @@ import { isSuperAdmin } from "@/lib/auth-utils"
 export const { handlers, auth, signIn, signOut } = NextAuth({
     trustHost: true,
     ...authConfig,
-    secret: process.env.AUTH_SECRET,
+    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+    logger: {
+        error(error: any) {
+            if (
+                error?.name === 'JWTSessionError' ||
+                error?.message?.includes('no matching decryption secret') ||
+                error?.cause?.message?.includes('no matching decryption secret')
+            ) {
+                // Silently ignore stale or mismatched session cookies from previous sessions
+                return;
+            }
+            console.error('[auth][error]', error);
+        },
+    },
     callbacks: {
         ...authConfig.callbacks,
         async signIn({ user, profile }) {

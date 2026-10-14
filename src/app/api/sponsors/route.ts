@@ -36,8 +36,12 @@ export async function GET(req: Request) {
                 ]
             };
         }
-        const sponsors = await Sponsor.find(query).sort({ order: 1 });
-        return NextResponse.json(sponsors);
+        const sponsors = await Sponsor.find(query).sort({ order: 1 }).lean();
+        const headers: Record<string, string> = isAdminView
+            ? { 'Cache-Control': 'no-store, max-age=0' }
+            : { 'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600' };
+
+        return NextResponse.json(sponsors, { headers });
     } catch (error) {
         return NextResponse.json({ error: 'Error fetching sponsors' }, { status: 500 });
     }

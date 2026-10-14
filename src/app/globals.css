@@ -44,6 +44,16 @@ body {
   line-height: 1.6;
 }
 
+::selection {
+  background-color: #D90429;
+  color: #FFFFFF;
+}
+
+:focus-visible {
+  outline: 2px solid #D90429;
+  outline-offset: 2px;
+}
+
 h1,
 h2,
 h3,
@@ -57,7 +67,7 @@ h4 {
 /* Standardized Site Container & Layout Utilities */
 .page-container {
   width: 100%;
-  max-width: 80rem; /* 1280px */
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.25rem;
@@ -73,8 +83,25 @@ h4 {
 
 @media (min-width: 1024px) {
   .page-container {
-    padding-left: 2.25rem;
-    padding-right: 2.25rem;
+    max-width: 96%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .page-container {
+    max-width: 96%;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .page-container {
+    max-width: 1840px; /* Ergonomic widescreen cap for 4K while filling 96% of 1080p and 1440p */
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 
@@ -280,4 +307,24 @@ h4 {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--steel-gray);
+}
+
+/* Continuous Marquee Ticker */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }

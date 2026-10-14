@@ -23,6 +23,12 @@ const RankingSchema = new Schema({
     updatedAt: { type: Date, default: Date.now },
 });
 
+// Compound indexes for optimal search and import performance
+RankingSchema.index({ athleteName: 1, category: 1 });
+RankingSchema.index({ category: 1, position: 1 });
+RankingSchema.index({ position: 1 });
+RankingSchema.index({ tournament: 1, category: 1 });
+
 const Ranking = models.Ranking || model('Ranking', RankingSchema);
 
 export default Ranking;

@@ -25,8 +25,12 @@ export async function GET(req: Request) {
         const query: any = {};
         if (type) query.type = type;
 
-        const categories = await Category.find(query).sort({ type: 1, ageGroup: 1, gender: 1, name: 1 });
-        return NextResponse.json(categories);
+        const categories = await Category.find(query).sort({ type: 1, ageGroup: 1, gender: 1, name: 1 }).lean();
+        return NextResponse.json(categories, {
+            headers: {
+                'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            },
+        });
     } catch (error) {
         console.error("GET /api/categories error:", error);
         return NextResponse.json({ error: 'Error al obtener las categorías' }, { status: 500 });

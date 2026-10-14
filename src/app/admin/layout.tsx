@@ -8,7 +8,12 @@ export default async function AdminLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const session = await auth();
+    let session = null;
+    try {
+        session = await auth();
+    } catch {
+        session = null;
+    }
     const user = session?.user as any;
     const userEmail = user?.email?.toLowerCase();
     const isSuperAdmin = userEmail === 'david.artavia.rodriguez@gmail.com';

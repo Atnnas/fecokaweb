@@ -28,8 +28,12 @@ export async function GET(req: Request) {
                 ]
             };
         }
-        const news = await News.find(query).sort({ publishedAt: -1 });
-        return NextResponse.json(news);
+        const news = await News.find(query).sort({ publishedAt: -1 }).lean();
+        const headers: Record<string, string> = isAdminView
+            ? { 'Cache-Control': 'no-store, max-age=0' }
+            : { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' };
+
+        return NextResponse.json(news, { headers });
     } catch (error) {
         return NextResponse.json({ error: 'Error fetching news' }, { status: 500 });
     }

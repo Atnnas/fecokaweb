@@ -3,12 +3,13 @@ import dbConnect from '@/lib/db';
 import Ranking from '@/models/Ranking';
 import RankingBackup from '@/models/RankingBackup';
 import { auth } from '@/auth';
+import { canEdit } from '@/lib/auth-utils';
 import { parseRankingExcel, ParsedRankingItem } from '@/lib/excel-ranking-parser';
 
 export async function POST(req: Request) {
     const session = await auth();
 
-    if (!session || session.user?.role === 'user') {
+    if (!canEdit(session)) {
         return NextResponse.json({ error: 'No autorizado: permisos insuficientes' }, { status: 403 });
     }
 

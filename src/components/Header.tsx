@@ -121,7 +121,10 @@ export default function Header({ onLoginClick }: { onLoginClick?: () => void }) 
                 />
             )}
 
-            <nav className={`fixed top-0 left-0 w-full z-[100] bg-white/95 backdrop-blur-xl shadow-premium border-b border-silver-accent/50 px-4 md:px-6 xl:px-8 h-20 lg:h-24 flex items-center transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+            <nav className={`fixed top-0 left-0 w-full z-[100] bg-white/95 backdrop-blur-2xl shadow-[0_4px_25px_rgba(0,27,72,0.06)] border-b border-slate-200/80 px-4 sm:px-6 2xl:px-8 h-20 lg:h-24 flex items-center transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+                {/* Official National Top Ribbon Accent */}
+                <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-midnight-blue via-crimson-red to-midnight-blue z-20" />
+
                 <DesktopNav
                     menuItems={menuItems}
                     pathname={pathname}

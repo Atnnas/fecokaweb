@@ -28,22 +28,23 @@ export default function MobileNav({
     return (
         <>
             {/* Mobile / Tablet Header Bar */}
-            <div className="flex xl:hidden items-center justify-between w-full h-full">
+            <div className="flex lg:hidden items-center justify-between w-full h-full">
                 <button
                     onClick={() => setIsMenuOpen(true)}
-                    className="p-2 -ml-2 text-midnight-blue hover:text-crimson-red focus:outline-none focus:ring-2 focus:ring-crimson-red rounded-xl transition-all active:scale-95 z-20"
+                    className="p-2 -ml-2 text-midnight-blue hover:text-crimson-red focus:outline-none focus:ring-2 focus:ring-crimson-red rounded-xl transition-all active:scale-95 z-20 cursor-pointer"
                     aria-label="Abrir Menú"
                 >
                     <Menu className="w-7 h-7" strokeWidth={2.5} />
                 </button>
 
                 {/* Clean Official Logo on Mobile / Tablet */}
-                <Link href="/" className="relative block h-10 w-36 ml-auto">
+                <Link href="/" className="flex items-center ml-auto shrink-0">
                     <Image
-                        src="/assets/fecoka-logo.jpg"
-                        alt="FECOKA"
-                        fill
-                        className="object-contain rounded-md"
+                        src="/assets/fecoka-logo-blanco-transparente.png"
+                        alt="FECOKA - Federación Costarricense de Karate"
+                        width={180}
+                        height={44}
+                        className="h-9 sm:h-10 w-auto object-contain shrink-0"
                         priority
                     />
                 </Link>
@@ -52,7 +53,7 @@ export default function MobileNav({
             {/* Premium Sidebar Overlay */}
             {mounted && (
                 <div
-                    className={`fixed inset-0 z-[110] xl:hidden transition-all duration-500 ${isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}
+                    className={`fixed inset-0 z-[110] lg:hidden transition-all duration-500 ${isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'}`}
                 >
                     {/* Backdrop Blur Overlay */}
                     <div

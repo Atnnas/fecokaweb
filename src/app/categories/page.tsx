@@ -156,7 +156,7 @@ export default function PublicCategoriesPage() {
                                 </span>
                                 <div className="h-px flex-1 bg-silver-accent" />
                             </div>
-                            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 sm:gap-6">
                                 <AnimatePresence>
                                     {kataCategories.map((cat: any) => (
                                         <CategoryCard key={cat._id} category={cat} />
@@ -176,7 +176,7 @@ export default function PublicCategoriesPage() {
                                 </span>
                                 <div className="h-px flex-1 bg-silver-accent" />
                             </div>
-                            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 sm:gap-6">
                                 <AnimatePresence>
                                     {kumiteCategories.map((cat: any) => (
                                         <CategoryCard key={cat._id} category={cat} />

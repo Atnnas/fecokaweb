@@ -46,3 +46,12 @@ next-env.d.ts
 
 client_secret_*.json
 *.xlsx
+
+# root test and scratch scripts
+test-db.*
+activate-admin.*
+set-admin.*
+fix_*.js
+*.log
+*_errors*
+*_output*
