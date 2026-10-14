@@ -16,7 +16,7 @@ export async function POST() {
     const sponsors = [
         {
             name: "World Karate Federation",
-            logoUrl: "https://www.wkf.net/img/logotipo-wkf.png",
+            logoUrl: "/assets/wkf-logo.png",
             websiteUrl: "https://www.wkf.net",
             tier: "gold",
             isActive: true,

@@ -117,9 +117,9 @@ export default function DesktopNav({
                 <Image
                   src="/assets/wkf-logo.png"
                   alt="World Karate Federation (WKF)"
-                  width={22}
-                  height={22}
-                  className="h-[18px] w-[18px] object-contain drop-shadow-sm"
+                  width={24}
+                  height={24}
+                  className="h-[20px] w-[20px] object-contain drop-shadow-sm"
                 />
               </a>
             </div>
